@@ -15,6 +15,7 @@ import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 import { useRouter, usePathname } from 'src/routes/hooks';
 
 import { _myAccount } from 'src/_mock';
+import { Iconify } from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -49,6 +50,18 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
     },
     [handleClosePopover, router]
   );
+
+  const handleLogout = useCallback(() => {
+    handleClosePopover();
+    // Clear any stored authentication data
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userData');
+    sessionStorage.clear();
+    // Show logout confirmation (optional)
+    console.log('User logged out successfully');
+    // Redirect to sign-in page
+    router.push('/sign-in');
+  }, [handleClosePopover, router]);
 
   return (
     <>
@@ -129,7 +142,20 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Box sx={{ p: 1 }}>
-          <Button fullWidth color="error" size="medium" variant="text">
+          <Button 
+            fullWidth 
+            color="error" 
+            size="medium" 
+            variant="text"
+            onClick={handleLogout}
+            startIcon={<Iconify icon="eva:log-out-fill" />}
+            sx={{
+              justifyContent: 'flex-start',
+              '&:hover': {
+                backgroundColor: 'error.lighter',
+              },
+            }}
+          >
             Logout
           </Button>
         </Box>

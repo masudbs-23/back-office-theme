@@ -21,6 +21,13 @@ export function SignInView() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSignIn = useCallback(() => {
+    // Set authentication state
+    localStorage.setItem('authToken', 'demo-token-123');
+    localStorage.setItem('userData', JSON.stringify({
+      name: 'Masud Rana',
+      email: 'demo@innovatica.com'
+    }));
+    // Redirect to dashboard
     router.push('/dashboard');
   }, [router]);
 
