@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -17,6 +17,7 @@ import { Scrollbar } from 'src/components/scrollbar';
 import { Breadcrumb } from 'src/components/breadcrumb';
 
 import { useRouter } from 'src/routes/hooks';
+import { useSearchParams } from 'react-router-dom';
 
 import { TableNoData } from 'src/components/table-no-data';
 import { UserTableRow } from '../user-table-row';
@@ -24,6 +25,7 @@ import { UserTableHead } from '../user-table-head';
 import { TableEmptyRows } from '../table-empty-rows';
 import { UserTableToolbar } from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
+import { useSnackbar } from 'src/components/snackbar';
 
 import type { UserProps } from '../user-table-row';
 
@@ -31,9 +33,36 @@ import type { UserProps } from '../user-table-row';
 
 export function UserView() {
   const router = useRouter();
+  const [searchParams] = useSearchParams();
+  const { showSnackbar } = useSnackbar();
   const table = useTable();
 
   const [filterName, setFilterName] = useState('');
+
+  // Refresh data when component mounts or when coming back from edit/create
+  useEffect(() => {
+    // Check if we're coming back from edit/create (refresh parameter)
+    const refresh = searchParams.get('refresh');
+    const action = searchParams.get('action');
+    
+    if (refresh === 'true') {
+      // Reset table state
+      table.onResetPage();
+      setFilterName('');
+      // Remove the refresh parameter from URL
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.delete('refresh');
+      newSearchParams.delete('action');
+      router.replace(`/dashboard/user?${newSearchParams.toString()}`);
+      
+      // Show success message based on action
+      if (action === 'updated') {
+        showSnackbar('User updated successfully!', 'success');
+      } else if (action === 'created') {
+        showSnackbar('User created successfully!', 'success');
+      }
+    }
+  }, [searchParams, table, router, showSnackbar]);
 
   const dataFiltered: UserProps[] = applyFilter({
     inputData: _users,
@@ -51,6 +80,8 @@ export function UserView() {
     setFilterName('');
     table.onResetPage();
   }, [table]);
+
+
 
   return (
     <DashboardContent>

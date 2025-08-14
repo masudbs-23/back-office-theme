@@ -5,6 +5,10 @@ import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 
@@ -13,17 +17,34 @@ import { Breadcrumb } from 'src/components/breadcrumb';
 import { useRouter } from 'src/routes/hooks';
 
 import { Iconify } from 'src/components/iconify';
+import { useSnackbar } from 'src/components/snackbar';
 
 // ----------------------------------------------------------------------
 
+const ROLES = [
+  'Leader',
+  'Hr Manager',
+  'UI Designer',
+  'UX Designer',
+  'UI/UX Designer',
+  'Project Manager',
+  'Backend Developer',
+  'Full Stack Designer',
+  'Front End Developer',
+  'Full Stack Developer',
+];
+
 export function NewUserView() {
   const router = useRouter();
+  const { showSnackbar } = useSnackbar();
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     address: '',
+    company: '',
+    role: '',
   });
 
   const handleInputChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,11 +54,33 @@ export function NewUserView() {
     }));
   };
 
+  const handleSelectChange = (field: string) => (event: any) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: event.target.value,
+    }));
+  };
+
   const handleSubmit = useCallback(() => {
     // Handle form submission here
     console.log('Form data:', formData);
-    router.push('/dashboard/user');
-  }, [formData, router]);
+    
+    // Basic validation
+    if (!formData.name || !formData.email || !formData.company || !formData.role) {
+      showSnackbar('Please fill in all required fields', 'error');
+      return;
+    }
+    
+    // Simulate API call
+    try {
+      // Here you would make an API call to create the user
+      setTimeout(() => {
+        router.push('/dashboard/user?refresh=true&action=created');
+      }, 1500);
+    } catch (error) {
+      showSnackbar('Failed to create user. Please try again.', 'error');
+    }
+  }, [formData, router, showSnackbar]);
 
   return (
     <DashboardContent>
@@ -123,6 +166,33 @@ export function NewUserView() {
                 label="Address"
                 value={formData.address}
                 onChange={handleInputChange('address')}
+                slotProps={{
+                  inputLabel: { shrink: true },
+                }}
+              />
+            </Box>
+
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <FormControl fullWidth>
+                <InputLabel>Role</InputLabel>
+                <Select
+                  value={formData.role}
+                  label="Role"
+                  onChange={handleSelectChange('role')}
+                >
+                  {ROLES.map((role) => (
+                    <MenuItem key={role} value={role}>
+                      {role}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <TextField
+                fullWidth
+                name="company"
+                label="Company"
+                value={formData.company}
+                onChange={handleInputChange('company')}
                 slotProps={{
                   inputLabel: { shrink: true },
                 }}

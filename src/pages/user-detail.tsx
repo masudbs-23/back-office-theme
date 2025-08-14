@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -21,6 +21,8 @@ import { Iconify } from 'src/components/iconify';
 
 import { useRouter } from 'src/routes/hooks';
 import { useParams } from 'react-router-dom';
+import { useSnackbar } from 'src/components/snackbar';
+import { _users } from 'src/_mock';
 
 // ----------------------------------------------------------------------
 
@@ -46,23 +48,37 @@ const STATUS_OPTIONS = [
 export default function UserDetailPage() {
   const router = useRouter();
   const { id } = useParams();
+  const { showSnackbar } = useSnackbar();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Mock user data - in real app, this would come from API based on ID
-  // Here you would fetch the user data using the id parameter
-  console.log('User ID:', id);
+  // Find user data from mock data based on ID
+  const userData = _users.find(user => user.id === id);
+
   const [formData, setFormData] = useState({
-    name: 'John Doe',
-    email: 'john.doe@example.com',
+    name: '',
+    email: '',
     phone: '+1 (555) 123-4567',
     address: '123 Main Street, New York, NY 10001',
-    company: 'Tech Solutions Inc.',
-    role: 'Full Stack Developer',
+    company: '',
+    role: '',
     bio: 'Experienced full-stack developer with 5+ years of experience in React, Node.js, and cloud technologies. Passionate about creating scalable and user-friendly applications.',
     website: 'https://johndoe.dev',
     linkedin: 'https://linkedin.com/in/johndoe',
     github: 'https://github.com/johndoe',
   });
+
+  // Load user data when component mounts
+  useEffect(() => {
+    if (userData) {
+      setFormData(prev => ({
+        ...prev,
+        name: userData.name,
+        email: `user${userData.id}@example.com`, // Mock email
+        company: userData.company,
+        role: userData.role,
+      }));
+    }
+  }, [userData]);
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>('/assets/images/avatar/avatar-1.webp');
@@ -104,13 +120,28 @@ export default function UserDetailPage() {
   };
 
   const handleSaveChanges = useCallback(() => {
-    // Handle form submission here
-    console.log('Updated user data:', formData);
-    console.log('Status:', status);
-    console.log('Is verified:', isVerified);
-    console.log('Selected image:', selectedImage);
-    // You can add a success notification here
-  }, [formData, status, isVerified, selectedImage]);
+    // Basic validation
+    if (!formData.name || !formData.email || !formData.company || !formData.role) {
+      showSnackbar('Please fill in all required fields', 'error');
+      return;
+    }
+    
+    // Simulate API call
+    try {
+      // Here you would make an API call to update the user
+      console.log('Updated user data:', formData);
+      console.log('Status:', status);
+      console.log('Is verified:', isVerified);
+      console.log('Selected image:', selectedImage);
+      
+      // Redirect to user table after successful update
+      setTimeout(() => {
+        router.push('/dashboard/user?refresh=true&action=updated');
+      }, 1500);
+    } catch (error) {
+      showSnackbar('Failed to update user. Please try again.', 'error');
+    }
+  }, [formData, status, isVerified, selectedImage, showSnackbar, router]);
 
   return (
     <DashboardContent>
