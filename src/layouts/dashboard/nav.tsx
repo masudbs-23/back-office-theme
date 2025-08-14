@@ -39,25 +39,25 @@ export function NavDesktop({
   const theme = useTheme();
 
   return (
-    <Box
-      sx={{
-        pt: 8,
-        px: 2.5,
-        top: 0,
-        left: 0,
-        height: 1,
-        display: 'none',
-        position: 'fixed',
-        flexDirection: 'column',
-        zIndex: 'var(--layout-nav-zIndex)',
-        width: 'var(--layout-nav-vertical-width)',
-        borderRight: `1px solid ${varAlpha(theme.vars.palette.grey['500Channel'], 0.12)}`,
-        [theme.breakpoints.up(layoutQuery)]: {
-          display: 'flex',
-        },
-        ...sx,
-      }}
-    >
+         <Box
+       sx={{
+         pt: 4,
+         px: 2.5,
+         top: 0,
+         left: 0,
+         height: 1,
+         display: 'none',
+         position: 'fixed',
+         flexDirection: 'column',
+         zIndex: 'var(--layout-nav-zIndex)',
+         width: 'var(--layout-nav-vertical-width)',
+         borderRight: `1px solid ${varAlpha(theme.vars.palette.grey['500Channel'], 0.12)}`,
+         [theme.breakpoints.up(layoutQuery)]: {
+           display: 'flex',
+         },
+         ...sx,
+       }}
+     >
       <NavContent data={data} slots={slots} />
     </Box>
   );
@@ -81,15 +81,15 @@ export function NavMobile({
       slotProps={{
         backdrop: { invisible: true },
       }}
-      sx={{
-        [`& .${drawerClasses.paper}`]: {
-          pt: 8,
-          px: 2.5,
-          overflow: 'unset',
-          width: 'var(--layout-nav-mobile-width)',
-          ...sx,
-        },
-      }}
+             sx={{
+         [`& .${drawerClasses.paper}`]: {
+           pt: 4,
+           px: 2.5,
+           overflow: 'unset',
+           width: 'var(--layout-nav-mobile-width)',
+           ...sx,
+         },
+       }}
     >
       <NavContent data={data} slots={slots} />
     </Drawer>
@@ -103,7 +103,7 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
 
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 1 }}>
         <Logo />
       </Box>
 
@@ -117,7 +117,7 @@ export function NavContent({ data, slots, sx }: NavContentProps) {
               display: 'flex',
               flex: '1 1 auto',
               flexDirection: 'column',
-              pt: 6,
+              pt: 0,
             },
             ...(Array.isArray(sx) ? sx : [sx]),
           ]}

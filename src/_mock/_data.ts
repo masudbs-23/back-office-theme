@@ -14,7 +14,7 @@ import {
 // ----------------------------------------------------------------------
 
 export const _myAccount = {
-  displayName: 'Jaydon Frankie',
+      displayName: 'Masud Rana',
   email: 'demo@innovatica.com',
   photoURL: '/assets/images/avatar/avatar-25.webp',
 };
@@ -208,3 +208,47 @@ export const _notifications = [
     isUnRead: false,
   },
 ];
+
+// ----------------------------------------------------------------------
+
+export const _orders = [...Array(24)].map((_, index) => {
+  const setIndex = index + 1;
+  const statuses = ['pending', 'pickup', 'delivered'];
+  const status = statuses[index % 3];
+  
+  return {
+    id: _id(index),
+    orderNumber: `ORD-${String(setIndex).padStart(4, '0')}`,
+    customerName: _fullName(index),
+    customerEmail: `${_fullName(index).toLowerCase().replace(/\s+/g, '.')}@example.com`,
+    customerPhone: `+1 (555) ${String(Math.floor(Math.random() * 900) + 100)}-${String(Math.floor(Math.random() * 9000) + 1000)}`,
+    customerAddress: `${Math.floor(Math.random() * 9999) + 1} ${['Main St', 'Oak Ave', 'Pine Rd', 'Elm Blvd', 'Cedar Ln'][index % 5]}, ${['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'][index % 5]}, ${['NY', 'CA', 'IL', 'TX', 'AZ'][index % 5]} ${String(Math.floor(Math.random() * 90000) + 10000)}`,
+    items: [
+      {
+        id: _id(index * 2),
+        name: _productNames(index),
+        price: _price(index),
+        quantity: Math.floor(Math.random() * 5) + 1,
+        image: `/assets/images/product/product-${(index % 24) + 1}.webp`,
+      },
+      ...(index % 3 === 0 ? [{
+        id: _id(index * 2 + 1),
+        name: _productNames((index + 1) % 24),
+        price: _price((index + 1) % 24),
+        quantity: Math.floor(Math.random() * 3) + 1,
+        image: `/assets/images/product/product-${((index + 1) % 24) + 1}.webp`,
+      }] : []),
+    ],
+    subtotal: _price(index) * (Math.floor(Math.random() * 5) + 1),
+    shipping: 15.99,
+    tax: _price(index) * 0.08,
+    total: _price(index) * (Math.floor(Math.random() * 5) + 1) + 15.99 + (_price(index) * 0.08),
+    status,
+    paymentMethod: ['Credit Card', 'PayPal', 'Cash on Delivery'][index % 3],
+    paymentStatus: ['paid', 'pending', 'failed'][index % 3],
+    orderDate: _times(index),
+    estimatedDelivery: new Date(Date.now() + (index % 7 + 3) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    notes: index % 4 === 0 ? 'Please deliver before 6 PM' : '',
+    trackingNumber: index % 2 === 0 ? `TRK${String(Math.floor(Math.random() * 900000) + 100000)}` : null,
+  };
+});

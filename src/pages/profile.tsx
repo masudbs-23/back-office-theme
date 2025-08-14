@@ -27,7 +27,7 @@ export default function ProfileView() {
     phone: '+1 (555) 123-4567',
     address: '123 Main Street, New York, NY 10001',
     bio: 'Full-stack developer with 5+ years of experience in React, Node.js, and cloud technologies.',
-    website: 'https://jaydonfrankie.dev',
+    website: 'https://masudrana.dev',
     company: 'Tech Solutions Inc.',
     position: 'Senior Developer',
   });

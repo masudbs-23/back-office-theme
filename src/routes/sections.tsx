@@ -21,6 +21,8 @@ export const NewUserPage = lazy(() => import('src/pages/new-user'));
 export const UserDetailPage = lazy(() => import('src/pages/user-detail'));
 export const NewProductPage = lazy(() => import('src/pages/new-product'));
 export const ProductDetailPage = lazy(() => import('src/pages/product-detail'));
+export const OrdersPage = lazy(() => import('src/pages/orders'));
+export const OrderDetailPage = lazy(() => import('src/pages/order-detail'));
 export const SignInPage = lazy(() => import('src/pages/sign-in'));
 export const SignUpPage = lazy(() => import('src/pages/sign-up'));
 export const VerifyOtpPage = lazy(() => import('src/pages/verify-otp'));
@@ -91,6 +93,8 @@ export const routesSection: RouteObject[] = [
       { path: 'products', element: <ProductsPage /> },
       { path: 'products/new', element: <NewProductPage /> },
       { path: 'products/:id', element: <ProductDetailPage /> },
+      { path: 'orders', element: <OrdersPage /> },
+      { path: 'orders/:id', element: <OrderDetailPage /> },
       { path: 'blog', element: <BlogPage /> },
       { path: 'blog/new', element: <NewBlogPage /> },
       { path: 'blog/:id', element: <BlogDetailPage /> },

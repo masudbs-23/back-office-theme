@@ -16,7 +16,6 @@ import { useRouter } from 'src/routes/hooks';
 
 import { ProductItem } from '../product-item';
 import { ProductSort } from '../product-sort';
-import { CartIcon } from '../product-cart-widget';
 import { ProductFilters } from '../product-filters';
 
 import type { FiltersProps } from '../product-filters';
@@ -98,8 +97,6 @@ export function ProductsView() {
 
   return (
     <DashboardContent>
-      <CartIcon totalItems={8} />
-
       <Breadcrumb 
         title="Products" 
         items={[

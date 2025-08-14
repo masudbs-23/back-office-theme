@@ -2,6 +2,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
@@ -13,9 +14,10 @@ type UserTableToolbarProps = {
   numSelected: number;
   filterName: string;
   onFilterName: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onClearFilters: () => void;
 };
 
-export function UserTableToolbar({ numSelected, filterName, onFilterName }: UserTableToolbarProps) {
+export function UserTableToolbar({ numSelected, filterName, onFilterName, onClearFilters }: UserTableToolbarProps) {
   return (
     <Toolbar
       sx={{
@@ -34,30 +36,50 @@ export function UserTableToolbar({ numSelected, filterName, onFilterName }: User
           {numSelected} selected
         </Typography>
       ) : (
-        <OutlinedInput
-          fullWidth
-          value={filterName}
-          onChange={onFilterName}
-          placeholder="Search user..."
-          startAdornment={
-            <InputAdornment position="start">
-              <Iconify width={20} icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-            </InputAdornment>
-          }
-          sx={{ maxWidth: 320 }}
-        />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <OutlinedInput
+            fullWidth
+            value={filterName}
+            onChange={onFilterName}
+            placeholder="Search user..."
+            startAdornment={
+              <InputAdornment position="start">
+                <Iconify width={20} icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+              </InputAdornment>
+            }
+            sx={{ maxWidth: 320 }}
+          />
+          {filterName && (
+            <Button
+              color="error"
+              variant="outlined"
+              startIcon={<Iconify icon="eva:close-fill" />}
+              onClick={onClearFilters}
+              sx={{
+                borderRadius: 2,
+                px: 4,
+                py: 1.5,
+                minWidth: 160,
+                fontWeight: 600,
+                borderWidth: 2,
+                whiteSpace: 'nowrap',
+                '&:hover': {
+                  borderWidth: 2,
+                  backgroundColor: 'error.main',
+                  color: 'white',
+                },
+              }}
+            >
+              Clear Filters
+            </Button>
+          )}
+        </div>
       )}
 
-      {numSelected > 0 ? (
+      {numSelected > 0 && (
         <Tooltip title="Delete">
           <IconButton>
             <Iconify icon="solar:trash-bin-trash-bold" />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <Iconify icon="ic:round-filter-list" />
           </IconButton>
         </Tooltip>
       )}

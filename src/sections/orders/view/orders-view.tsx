@@ -8,8 +8,11 @@ import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-import { _users } from 'src/_mock';
+import { _orders } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
 
 import { Iconify } from 'src/components/iconify';
@@ -19,100 +22,127 @@ import { Breadcrumb } from 'src/components/breadcrumb';
 import { useRouter } from 'src/routes/hooks';
 
 import { TableNoData } from '../table-no-data';
-import { UserTableRow } from '../user-table-row';
-import { UserTableHead } from '../user-table-head';
+import { OrderTableRow } from '../order-table-row';
+import { OrderTableHead } from '../order-table-head';
 import { TableEmptyRows } from '../table-empty-rows';
-import { UserTableToolbar } from '../user-table-toolbar';
+import { OrderTableToolbar } from '../order-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
-import type { UserProps } from '../user-table-row';
+import type { OrderProps } from '../order-table-row';
 
 // ----------------------------------------------------------------------
 
-export function UserView() {
+export function OrdersView() {
   const router = useRouter();
   const table = useTable();
 
   const [filterName, setFilterName] = useState('');
+  const [filterDate, setFilterDate] = useState<Date | null>(null);
 
-  const dataFiltered: UserProps[] = applyFilter({
-    inputData: _users,
+  const dataFiltered: OrderProps[] = applyFilter({
+    inputData: _orders,
     comparator: getComparator(table.order, table.orderBy),
     filterName,
+    filterDate,
   });
 
-  const notFound = !dataFiltered.length && !!filterName;
+  const notFound = !dataFiltered.length && (!!filterName || !!filterDate);
 
-  const handleNewUser = useCallback(() => {
-    router.push('/dashboard/user/new');
+  const handleNewOrder = useCallback(() => {
+    router.push('/dashboard/orders/new');
   }, [router]);
 
   const handleClearFilters = useCallback(() => {
     setFilterName('');
+    setFilterDate(null);
     table.onResetPage();
   }, [table]);
 
   return (
     <DashboardContent>
       <Breadcrumb 
-        title="Users" 
+        title="Orders" 
         items={[
           { title: 'Dashboard', href: '/dashboard' },
-          { title: 'Users' }
+          { title: 'Orders' }
         ]} 
       />
 
-      <Box
+      <Card
         sx={{
-          mb: 5,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
+          backgroundColor: '#FFFFFF',
+          borderRadius: 3,
+          overflow: 'hidden',
         }}
       >
-        <Button
-          variant="contained"
-          color="inherit"
-          startIcon={<Iconify icon="mingcute:add-line" />}
-          onClick={handleNewUser}
-        >
-          New user
-        </Button>
-      </Box>
-
-      <Card>
-        <UserTableToolbar
+        <OrderTableToolbar
           numSelected={table.selected.length}
           filterName={filterName}
+          filterDate={filterDate}
           onFilterName={(event: React.ChangeEvent<HTMLInputElement>) => {
             setFilterName(event.target.value);
+            table.onResetPage();
+          }}
+          onFilterDate={(newValue) => {
+            setFilterDate(newValue);
             table.onResetPage();
           }}
           onClearFilters={handleClearFilters}
         />
 
         <Scrollbar>
-          <TableContainer sx={{ overflow: 'unset' }}>
-            <Table sx={{ minWidth: 800 }}>
-              <UserTableHead
+          <TableContainer 
+            sx={{ 
+              overflow: 'unset',
+              '& .MuiTable-root': {
+                borderCollapse: 'separate',
+                borderSpacing: 0,
+              },
+            }}
+          >
+            <Table 
+              sx={{ 
+                minWidth: { xs: 600, md: 800, lg: 1200 },
+                '& .MuiTableCell-root': {
+                  borderBottom: '1px solid',
+                  borderColor: 'divider',
+                  py: 2,
+                  px: 3,
+                },
+                '& .MuiTableHead-root .MuiTableCell-root': {
+                  backgroundColor: '#f8fafc',
+                  fontWeight: 600,
+                  fontSize: '0.875rem',
+                  color: 'text.primary',
+                  borderBottom: 'none',
+                  borderTop: 'none',
+                },
+                '& .MuiTableBody-root .MuiTableRow-root:hover': {
+                  backgroundColor: 'transparent',
+                },
+              }}
+            >
+              <OrderTableHead
                 order={table.order}
                 orderBy={table.orderBy}
-                rowCount={_users.length}
+                rowCount={_orders.length}
                 numSelected={table.selected.length}
                 onSort={table.onSort}
-                onSelectAllRows={(checked) =>
+                onSelectAllRows={(checked: boolean) =>
                   table.onSelectAllRows(
                     checked,
-                    _users.map((user) => user.id)
+                    _orders.map((order) => order.id)
                   )
                 }
                 headLabel={[
-                  { id: 'name', label: 'Name' },
-                  { id: 'company', label: 'Company' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
-                  { id: 'status', label: 'Status' },
-                  { id: '' },
+                  { id: 'orderNumber', label: 'Order #', width: 100 },
+                  { id: 'customerName', label: 'Customer', width: 150 },
+                  { id: 'items', label: 'Items', width: 350 },
+                  { id: 'total', label: 'Total', width: 80, align: 'right' },
+                  { id: 'status', label: 'Status', width: 100, align: 'center' },
+                  { id: 'orderDate', label: 'Order Date', width: 100 },
+                  { id: 'paymentStatus', label: 'Payment', width: 80, align: 'center' },
+                  { id: 'actions', label: 'Actions', width: 60, align: 'center' },
                 ]}
               />
               <TableBody>
@@ -122,7 +152,7 @@ export function UserView() {
                     table.page * table.rowsPerPage + table.rowsPerPage
                   )
                   .map((row) => (
-                    <UserTableRow
+                    <OrderTableRow
                       key={row.id}
                       row={row}
                       selected={table.selected.includes(row.id)}
@@ -132,7 +162,7 @@ export function UserView() {
 
                 <TableEmptyRows
                   height={68}
-                  emptyRows={emptyRows(table.page, table.rowsPerPage, _users.length)}
+                  emptyRows={emptyRows(table.page, table.rowsPerPage, _orders.length)}
                 />
 
                 {notFound && <TableNoData searchQuery={filterName} />}
@@ -144,11 +174,17 @@ export function UserView() {
         <TablePagination
           component="div"
           page={table.page}
-          count={_users.length}
+          count={_orders.length}
           rowsPerPage={table.rowsPerPage}
           onPageChange={table.onChangePage}
           rowsPerPageOptions={[5, 10, 25]}
           onRowsPerPageChange={table.onChangeRowsPerPage}
+          sx={{
+            backgroundColor: '#FFFFFF',
+            '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': {
+              fontWeight: 500,
+            },
+          }}
         />
       </Card>
     </DashboardContent>
@@ -159,10 +195,10 @@ export function UserView() {
 
 export function useTable() {
   const [page, setPage] = useState(0);
-  const [orderBy, setOrderBy] = useState('name');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [orderBy, setOrderBy] = useState('orderDate');
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selected, setSelected] = useState<string[]>([]);
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
 
   const onSort = useCallback(
     (id: string) => {
