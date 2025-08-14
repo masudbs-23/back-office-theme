@@ -27,22 +27,20 @@ export interface AuthResponse {
 
 // Food types
 export interface Food {
-  id: string;
+  _id: string;
   name: string;
   description?: string;
   price: number;
   category?: string;
   image?: string;
   available: boolean;
+  preparationTime: number;
   createdAt: string;
   updatedAt: string;
+  __v: number;
 }
 
-export interface FoodsResponse {
-  success: boolean;
-  data: Food[];
-  message?: string;
-}
+export interface FoodsResponse extends Array<Food> {}
 
 // Generic API response
 export interface ApiResponse<T = any> {

@@ -1,113 +1,85 @@
-import { useCallback } from 'react';
-
-import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import Checkbox from '@mui/material/Checkbox';
-import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import { Iconify } from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-type Props = {
-  filters: {
-    name: string;
-    category: string;
-    available: string;
-  };
-  onFilters: (name: string, value: string) => void;
-  categoryOptions: string[];
+type FoodTableToolbarProps = {
+  numSelected: number;
+  filterName: string;
+  onFilterName: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onClearFilters: () => void;
 };
 
-export function FoodTableToolbar({ filters, onFilters, categoryOptions }: Props) {
-  const handleCategoryChange = useCallback(
-    (event: SelectChangeEvent<string>) => {
-      onFilters('category', event.target.value);
-    },
-    [onFilters]
-  );
-
-  const handleAvailableChange = useCallback(
-    (event: SelectChangeEvent<string>) => {
-      onFilters('available', event.target.value);
-    },
-    [onFilters]
-  );
-
+export function FoodTableToolbar({ numSelected, filterName, onFilterName, onClearFilters }: FoodTableToolbarProps) {
   return (
-    <Stack
-      spacing={2}
-      alignItems={{ xs: 'flex-end', md: 'center' }}
-      direction={{
-        xs: 'column',
-        md: 'row',
-      }}
+    <Toolbar
       sx={{
-        p: 2.5,
-        pr: { xs: 2.5, md: 1 },
+        height: 96,
+        display: 'flex',
+        justifyContent: 'space-between',
+        p: (theme) => theme.spacing(0, 1, 0, 3),
       }}
     >
-      <Stack direction="row" alignItems="center" spacing={2} flexGrow={1} sx={{ width: 1 }}>
-        <TextField
-          fullWidth
-          value={filters.name}
-          onChange={(event) => onFilters('name', event.target.value)}
-          placeholder="Search..."
-          InputProps={{
-            startAdornment: (
+      {numSelected > 0 ? (
+        <Typography component="div" variant="subtitle1">
+          {numSelected} selected
+        </Typography>
+      ) : (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <OutlinedInput
+            fullWidth
+            value={filterName}
+            onChange={onFilterName}
+            placeholder="Search food..."
+            startAdornment={
               <InputAdornment position="start">
-                <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+                <Iconify width={20} icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
               </InputAdornment>
-            ),
-          }}
-        />
+            }
+            sx={{ maxWidth: 320 }}
+          />
+          {filterName && (
+            <Button
+              color="error"
+              variant="outlined"
+              startIcon={<Iconify icon="eva:close-fill" />}
+              onClick={onClearFilters}
+              sx={{
+                borderRadius: 2,
+                px: 4,
+                py: 1.5,
+                minWidth: 160,
+                fontWeight: 600,
+                borderWidth: 2,
+                whiteSpace: 'nowrap',
+                '&:hover': {
+                  borderWidth: 2,
+                  backgroundColor: 'error.main',
+                  color: 'white',
+                },
+              }}
+            >
+              Clear Filters
+            </Button>
+          )}
+          
+        </div>
+      )}
 
-        <FormControl
-          sx={{
-            minWidth: 240,
-          }}
-        >
-          <InputLabel>Category</InputLabel>
-
-          <Select
-            value={filters.category}
-            onChange={handleCategoryChange}
-            input={<OutlinedInput label="Category" />}
-          >
-            <MenuItem value="all">All</MenuItem>
-
-            {categoryOptions.map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl
-          sx={{
-            minWidth: 240,
-          }}
-        >
-          <InputLabel>Available</InputLabel>
-
-          <Select
-            value={filters.available}
-            onChange={handleAvailableChange}
-            input={<OutlinedInput label="Available" />}
-          >
-            <MenuItem value="all">All</MenuItem>
-            <MenuItem value="true">Available</MenuItem>
-            <MenuItem value="false">Unavailable</MenuItem>
-          </Select>
-        </FormControl>
-      </Stack>
-    </Stack>
+      {numSelected > 0 && (
+        <Tooltip title="Delete">
+          <IconButton sx={{ color: 'error.main' }}>
+            <Iconify icon="solar:trash-bin-trash-bold" />
+          </IconButton>
+        </Tooltip>
+      )}
+    </Toolbar>
   );
 }

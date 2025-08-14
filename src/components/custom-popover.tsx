@@ -73,6 +73,9 @@ export const CustomPopover = forwardRef<HTMLDivElement, Props>(
     };
 
     const [arrowDirection, arrowPosition] = arrow.split('-') as [keyof typeof arrowStyle, keyof typeof arrowPositionStyle];
+    
+    // Get arrow position styles with fallback to prevent undefined access
+    const positionStyles = arrowPositionStyle[arrowPosition] || arrowPositionStyle['top-right'];
 
     return (
       <Popover
@@ -89,12 +92,12 @@ export const CustomPopover = forwardRef<HTMLDivElement, Props>(
         {!disabledArrow && (
           <Box
             sx={{
-              top: arrowPositionStyle[arrowPosition].top,
-              left: arrowPositionStyle[arrowPosition].left,
-              right: arrowPositionStyle[arrowPosition].right,
-              bottom: arrowPositionStyle[arrowPosition].bottom,
-              width: arrowStyle[arrowDirection].width,
-              height: arrowStyle[arrowDirection].height,
+              top: positionStyles.top,
+              left: positionStyles.left,
+              right: positionStyles.right,
+              bottom: positionStyles.bottom,
+              width: arrowStyle[arrowDirection]?.width,
+              height: arrowStyle[arrowDirection]?.height,
               position: 'absolute',
               transform: 'rotate(45deg)',
               bgcolor: 'background.paper',

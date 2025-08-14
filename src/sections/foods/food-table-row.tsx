@@ -1,22 +1,18 @@
 import { useState, useCallback } from 'react';
 
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
+import Popover from '@mui/material/Popover';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
+import MenuList from '@mui/material/MenuList';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
-import ListItemText from '@mui/material/ListItemText';
-import LinearProgress from '@mui/material/LinearProgress';
+import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
+import Box from '@mui/material/Box';
 
-import { usePopover } from 'src/hooks/use-popover';
-
-import { ConfirmDialog } from 'src/components/custom-dialog';
 import { Label, labelClasses } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
-import { CustomPopover, usePopover as usePopoverCustom } from 'src/components/custom-popover';
+import { useRouter } from 'src/routes/hooks';
 
 import type { Food } from 'src/api/types';
 
@@ -24,54 +20,57 @@ import type { Food } from 'src/api/types';
 
 type Props = {
   selected: boolean;
-  onEditRow: VoidFunction;
   row: Food;
   onSelectRow: VoidFunction;
-  onDeleteRow: VoidFunction;
-  onViewRow: VoidFunction;
 };
 
 export function FoodTableRow({
   row,
   selected,
-  onEditRow,
   onSelectRow,
-  onDeleteRow,
-  onViewRow,
 }: Props) {
-  const { name, description, price, category, available, image, createdAt } = row;
+  const router = useRouter();
+  const { name, price, category, available, image, createdAt } = row;
 
-  const confirm = usePopover();
+  const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
 
-  const quickEdit = usePopoverCustom();
+  const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    setOpenPopover(event.currentTarget);
+  }, []);
 
-  const [availableStatus, setAvailableStatus] = useState(available);
+  const handleClosePopover = useCallback(() => {
+    setOpenPopover(null);
+  }, []);
 
-  const handleChangeAvailable = useCallback(
-    (event: any) => {
-      setAvailableStatus(event.target.value);
-    },
-    []
-  );
+  const handleEdit = useCallback(() => {
+    handleClosePopover();
+    router.push(`/dashboard/foods/${row._id}`);
+  }, [router, row._id, handleClosePopover]);
+
+  const handleDelete = useCallback(() => {
+    handleClosePopover();
+    // You can implement delete logic here
+    console.log('Delete food:', row._id);
+  }, [handleClosePopover, row._id]);
 
   return (
     <>
-      <TableRow hover selected={selected}>
+      <TableRow tabIndex={-1} role="checkbox" selected={selected}>
         <TableCell padding="checkbox">
-          <Checkbox checked={selected} onClick={onSelectRow} />
+          <Checkbox disableRipple checked={selected} onChange={onSelectRow} />
         </TableCell>
 
-        <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt={name} src={image} sx={{ mr: 2 }}>
-            {name.charAt(0)}
-          </Avatar>
-
-          <ListItemText
-            primary={name}
-            secondary={description}
-            primaryTypographyProps={{ typography: 'body2' }}
-            secondaryTypographyProps={{ component: 'span', color: 'text.disabled' }}
-          />
+        <TableCell component="th" scope="row">
+          <Box
+            sx={{
+              gap: 2,
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar alt={name} src={image} />
+            {name}
+          </Box>
         </TableCell>
 
         <TableCell>${price}</TableCell>
@@ -93,75 +92,60 @@ export function FoodTableRow({
         <TableCell>
           <Label
             variant="soft"
-            color={availableStatus ? 'success' : 'error'}
+            color={available ? 'success' : 'error'}
             sx={{
               [`& .${labelClasses.label}`]: {
                 textTransform: 'capitalize',
               },
             }}
           >
-            {availableStatus ? 'Available' : 'Unavailable'}
+            {available ? 'Available' : 'Unavailable'}
           </Label>
         </TableCell>
 
         <TableCell>{new Date(createdAt).toLocaleDateString()}</TableCell>
 
         <TableCell align="right">
-          <IconButton color={quickEdit.open ? 'inherit' : 'default'} onClick={quickEdit.onOpen}>
-            <Iconify icon="eva:more-vertical-fill" />
+          <IconButton onClick={handleOpenPopover}>
+            <Iconify icon="solar:eye-bold" />
           </IconButton>
         </TableCell>
       </TableRow>
 
-      <CustomPopover
-        open={quickEdit.open}
-        onClose={quickEdit.onClose}
-        arrow="right-top"
-        sx={{ width: 140 }}
+      <Popover
+        open={!!openPopover}
+        anchorEl={openPopover}
+        onClose={handleClosePopover}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem
-          onClick={() => {
-            onViewRow();
-            quickEdit.onClose();
+        <MenuList
+          disablePadding
+          sx={{
+            p: 0.5,
+            gap: 0.5,
+            width: 140,
+            display: 'flex',
+            flexDirection: 'column',
+            [`& .${menuItemClasses.root}`]: {
+              px: 1,
+              gap: 2,
+              borderRadius: 0.75,
+              [`&.${menuItemClasses.selected}`]: { bgcolor: 'action.selected' },
+            },
           }}
         >
-          <Iconify icon="solar:eye-bold" />
-          View
-        </MenuItem>
+          <MenuItem onClick={handleEdit}>
+            <Iconify icon="solar:pen-bold" />
+            Edit
+          </MenuItem>
 
-        <MenuItem
-          onClick={() => {
-            onEditRow();
-            quickEdit.onClose();
-          }}
-        >
-          <Iconify icon="solar:pen-bold" />
-          Edit
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => {
-            confirm.onTrue();
-            quickEdit.onClose();
-          }}
-          sx={{ color: 'error.main' }}
-        >
-          <Iconify icon="solar:trash-bin-trash-bold" />
-          Delete
-        </MenuItem>
-      </CustomPopover>
-
-      <ConfirmDialog
-        open={confirm.value}
-        onClose={confirm.onFalse}
-        title="Delete"
-        content="Are you sure want to delete?"
-        action={
-          <Button variant="contained" color="error" onClick={onDeleteRow}>
+          <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
+            <Iconify icon="solar:trash-bin-trash-bold" />
             Delete
-          </Button>
-        }
-      />
+          </MenuItem>
+        </MenuList>
+      </Popover>
     </>
   );
 }
