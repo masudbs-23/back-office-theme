@@ -13,6 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 
 import { useRouter, usePathname } from 'src/routes/hooks';
+import { useAuth } from 'src/contexts/AuthContext';
 
 import { _myAccount } from 'src/_mock';
 import { Iconify } from 'src/components/iconify';
@@ -30,6 +31,7 @@ export type AccountPopoverProps = IconButtonProps & {
 
 export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps) {
   const router = useRouter();
+  const { logout, user } = useAuth();
 
   const pathname = usePathname();
 
@@ -53,15 +55,9 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
 
   const handleLogout = useCallback(() => {
     handleClosePopover();
-    // Clear any stored authentication data
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userData');
-    sessionStorage.clear();
-    // Show logout confirmation (optional)
-    console.log('User logged out successfully');
-    // Redirect to sign-in page
+    logout();
     router.push('/sign-in');
-  }, [handleClosePopover, router]);
+  }, [handleClosePopover, logout, router]);
 
   return (
     <>
@@ -96,11 +92,11 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
       >
         <Box sx={{ p: 2, pb: 1.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {_myAccount?.displayName}
+            {user?.name || user?.email || _myAccount?.displayName}
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {_myAccount?.email}
+            {user?.email || _myAccount?.email}
           </Typography>
         </Box>
 

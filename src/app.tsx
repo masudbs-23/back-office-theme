@@ -1,6 +1,7 @@
 import 'src/global.css';
 
 import { useEffect, useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { usePathname } from 'src/routes/hooks';
 
@@ -9,12 +10,24 @@ import { ScrollProgress } from 'src/components/scroll-progress';
 import { SnackbarProvider } from 'src/components/snackbar';
 import { Preloader } from 'src/components/preloader';
 import { PreloaderProvider } from 'src/components/preloader-context';
+import { AuthProvider } from 'src/contexts/AuthContext';
 
 // ----------------------------------------------------------------------
 
 type AppProps = {
   children: React.ReactNode;
 };
+
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      gcTime: 10 * 60 * 1000, // 10 minutes
+      retry: 1,
+    },
+  },
+});
 
 export default function App({ children }: AppProps) {
   useScrollToTop();
@@ -34,15 +47,19 @@ export default function App({ children }: AppProps) {
   };
 
   return (
-    <ThemeProvider>
-      <PreloaderProvider>
-        <SnackbarProvider>
-          <Preloader isLoading={isInitialLoading} onComplete={handlePreloaderComplete} />
-          <ScrollProgress />
-          {children}
-        </SnackbarProvider>
-      </PreloaderProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <ThemeProvider>
+          <PreloaderProvider>
+            <SnackbarProvider>
+              <Preloader isLoading={isInitialLoading} onComplete={handlePreloaderComplete} />
+              <ScrollProgress />
+              {children}
+            </SnackbarProvider>
+          </PreloaderProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 

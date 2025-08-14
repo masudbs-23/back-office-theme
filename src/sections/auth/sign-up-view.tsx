@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -8,25 +8,48 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { useRouter } from 'src/routes/hooks';
+import { useAuth } from 'src/contexts/AuthContext';
 
 import { Iconify } from 'src/components/iconify';
+import { ErrorAlert } from 'src/components/error-alert';
 
 // ----------------------------------------------------------------------
 
 export function SignUpView() {
   const router = useRouter();
+  const { register, isLoading, error, clearError } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [formError, setFormError] = useState('');
 
-  const handleSignUp = useCallback(() => {
-    // Here you would typically make an API call to register the user
-    console.log('Sign up clicked');
-    // Navigate to OTP verification page
-    router.push('/verify-otp');
-  }, [router]);
+  const handleSignUp = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormError('');
+
+    if (!email || !password || !confirmPassword) {
+      setFormError('All fields are required');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setFormError('Passwords do not match');
+      return;
+    }
+
+    if (password.length < 6) {
+      setFormError('Password must be at least 6 characters');
+      return;
+    }
+
+    await register(email, password);
+  }, [email, password, confirmPassword, register]);
 
   const handleSignInClick = useCallback(() => {
     router.push('/');
@@ -34,17 +57,27 @@ export function SignUpView() {
 
   const renderForm = (
     <Box
+      component="form"
+      onSubmit={handleSignUp}
       sx={{
         display: 'flex',
         alignItems: 'flex-end',
         flexDirection: 'column',
       }}
     >
+      <ErrorAlert 
+        error={error || formError} 
+        onClose={() => { clearError(); setFormError(''); }} 
+      />
+
       <TextField
         fullWidth
         name="email"
         label="Email address"
-        defaultValue=""
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
         sx={{ mb: 3 }}
         slotProps={{
           inputLabel: { shrink: true },
@@ -55,8 +88,10 @@ export function SignUpView() {
         fullWidth
         name="password"
         label="Password"
-        defaultValue=""
         type={showPassword ? 'text' : 'password'}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
         slotProps={{
           inputLabel: { shrink: true },
           input: {
@@ -76,8 +111,10 @@ export function SignUpView() {
         fullWidth
         name="confirmPassword"
         label="Confirm Password"
-        defaultValue=""
         type={showConfirmPassword ? 'text' : 'password'}
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        required
         slotProps={{
           inputLabel: { shrink: true },
           input: {
@@ -99,9 +136,10 @@ export function SignUpView() {
         type="submit"
         color="inherit"
         variant="contained"
-        onClick={handleSignUp}
+        disabled={isLoading}
+        startIcon={isLoading ? <CircularProgress size={20} /> : null}
       >
-        Create Account
+        {isLoading ? 'Creating Account...' : 'Create Account'}
       </Button>
     </Box>
   );

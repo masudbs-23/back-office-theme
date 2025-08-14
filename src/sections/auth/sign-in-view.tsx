@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -8,28 +8,38 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { useRouter } from 'src/routes/hooks';
+import { useAuth } from 'src/contexts/AuthContext';
 
 import { Iconify } from 'src/components/iconify';
+import { ErrorAlert } from 'src/components/error-alert';
 
 // ----------------------------------------------------------------------
 
 export function SignInView() {
   const router = useRouter();
+  const { login, isLoading, error, isAuthenticated, clearError } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleSignIn = useCallback(() => {
-    // Set authentication state
-    localStorage.setItem('authToken', 'demo-token-123');
-    localStorage.setItem('userData', JSON.stringify({
-      name: 'Masud Rana',
-      email: 'demo@innovatica.com'
-    }));
-    // Redirect to dashboard
-    router.push('/dashboard');
-  }, [router]);
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/dashboard');
+    }
+  }, [isAuthenticated, router]);
+
+  const handleSignIn = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) {
+      return;
+    }
+    await login(email, password);
+  }, [email, password, login]);
 
   const handleSignUpClick = useCallback(() => {
     router.push('/sign-up');
@@ -37,17 +47,24 @@ export function SignInView() {
 
   const renderForm = (
     <Box
+      component="form"
+      onSubmit={handleSignIn}
       sx={{
         display: 'flex',
         alignItems: 'flex-end',
         flexDirection: 'column',
       }}
     >
+      <ErrorAlert error={error} onClose={clearError} />
+
       <TextField
         fullWidth
         name="email"
         label="Email address"
-        defaultValue="hello@gmail.com"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
         sx={{ mb: 3 }}
         slotProps={{
           inputLabel: { shrink: true },
@@ -62,8 +79,10 @@ export function SignInView() {
         fullWidth
         name="password"
         label="Password"
-        defaultValue="@demo1234"
         type={showPassword ? 'text' : 'password'}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
         slotProps={{
           inputLabel: { shrink: true },
           input: {
@@ -85,9 +104,10 @@ export function SignInView() {
         type="submit"
         color="inherit"
         variant="contained"
-        onClick={handleSignIn}
+        disabled={isLoading}
+        startIcon={isLoading ? <CircularProgress size={20} /> : null}
       >
-        Sign in
+        {isLoading ? 'Signing in...' : 'Sign in'}
       </Button>
     </Box>
   );

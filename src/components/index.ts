@@ -1,6 +1,9 @@
 export { Iconify } from './iconify';
 export { Scrollbar } from './scrollbar';
 export { Breadcrumb } from './breadcrumb';
+export { ProtectedRoute } from './protected-route';
+export { AuthRedirect } from './auth-redirect';
+export { ErrorAlert } from './error-alert';
 export { Label } from './label';
 export { Logo } from './logo';
 export { SvgColor } from './svg-color';
@@ -9,3 +12,6 @@ export { ScrollProgress } from './scroll-progress';
 export { SnackbarProvider, useSnackbar } from './snackbar';
 export { Preloader } from './preloader';
 export { PreloaderProvider, usePreloader } from './preloader-context';
+export { ConfirmDialog } from './custom-dialog';
+export { CustomPopover, usePopover } from './custom-popover';
+export * from './table';

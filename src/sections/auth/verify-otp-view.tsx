@@ -5,15 +5,27 @@ import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { useRouter } from 'src/routes/hooks';
+import { useAuth } from 'src/contexts/AuthContext';
+import { ErrorAlert } from 'src/components/error-alert';
 
 // ----------------------------------------------------------------------
 
 export function VerifyOtpView() {
   const router = useRouter();
+  const { verifyOtp, isLoading, error, clearError, isAuthenticated } = useAuth();
   const [otp, setOtp] = useState(['', '', '', '']);
+  const [email, setEmail] = useState('');
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/dashboard');
+    }
+  }, [isAuthenticated, router]);
 
   const handleOtpChange = useCallback((index: number, value: string) => {
     if (value.length <= 1 && /^\d*$/.test(value)) {
@@ -35,15 +47,13 @@ export function VerifyOtpView() {
     }
   }, [otp]);
 
-     const handleVerifyOtp = useCallback(() => {
-     const otpString = otp.join('');
-     if (otpString.length === 4) {
-       // Here you would typically make an API call to verify the OTP
-       console.log('OTP to verify:', otpString);
-       // Navigate to signin page after successful verification
-       router.push('/');
-     }
-   }, [otp, router]);
+     const handleVerifyOtp = useCallback(async (e: React.FormEvent) => {
+       e.preventDefault();
+       const otpString = otp.join('');
+       if (otpString.length === 4 && email) {
+         await verifyOtp(email, otpString);
+       }
+     }, [otp, email, verifyOtp]);
 
   const handleResendOtp = useCallback(() => {
     // Here you would typically make an API call to resend OTP
@@ -96,12 +106,30 @@ export function VerifyOtpView() {
 
   const renderForm = (
     <Box
+      component="form"
+      onSubmit={handleVerifyOtp}
       sx={{
         display: 'flex',
         alignItems: 'flex-end',
         flexDirection: 'column',
       }}
     >
+      <ErrorAlert error={error} onClose={clearError} />
+
+      <TextField
+        fullWidth
+        name="email"
+        label="Email address"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        sx={{ mb: 3 }}
+        slotProps={{
+          inputLabel: { shrink: true },
+        }}
+      />
+
       <Typography
         variant="body2"
         sx={{
@@ -116,17 +144,17 @@ export function VerifyOtpView() {
 
       {renderOtpInputs}
 
-             <Button
-         fullWidth
-         size="large"
-         type="submit"
-         color="inherit"
-         variant="contained"
-         onClick={handleVerifyOtp}
-         disabled={otp.join('').length !== 4}
-       >
-         Verify
-       </Button>
+      <Button
+        fullWidth
+        size="large"
+        type="submit"
+        color="inherit"
+        variant="contained"
+        disabled={otp.join('').length !== 4 || !email || isLoading}
+        startIcon={isLoading ? <CircularProgress size={20} /> : null}
+      >
+        {isLoading ? 'Verifying...' : 'Verify'}
+      </Button>
     </Box>
   );
 
