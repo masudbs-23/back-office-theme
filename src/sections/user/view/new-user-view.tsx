@@ -3,21 +3,20 @@ import { useState, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-
-import { DashboardContent } from 'src/layouts/dashboard';
-
-import { Breadcrumb } from 'src/components/breadcrumb';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 
 import { useRouter } from 'src/routes/hooks';
 
-import { Iconify } from 'src/components/iconify';
+import { DashboardContent } from 'src/layouts/dashboard';
+
 import { useSnackbar } from 'src/components/snackbar';
+import { Breadcrumb } from 'src/components/breadcrumb';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -98,7 +97,7 @@ export function NewUserView() {
           variant="outlined"
           size="large"
           onClick={() => router.push('/dashboard/user')}
-          startIcon={<Iconify icon="eva:arrow-back-fill" />}
+          startIcon={<LucideIcon icon="eva:arrow-back-fill" />}
           sx={{
             borderColor: 'grey.400',
             color: 'grey.700',

@@ -1,29 +1,28 @@
-import { useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
+import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
+import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import Select from '@mui/material/Select';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import Paper from '@mui/material/Paper';
-
-import { DashboardContent } from 'src/layouts/dashboard';
-
-import { Breadcrumb } from 'src/components/breadcrumb';
-import { Iconify } from 'src/components/iconify';
-import { Label } from 'src/components/label';
+import FormControl from '@mui/material/FormControl';
 
 import { useRouter } from 'src/routes/hooks';
 
 import { _orders } from 'src/_mock';
+import { DashboardContent } from 'src/layouts/dashboard';
+
+import { Label } from 'src/components/label';
+import { Breadcrumb } from 'src/components/breadcrumb';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -31,12 +30,34 @@ export default function OrderDetailPage() {
   const router = useRouter();
   const { id } = useParams();
   
-  const order = _orders.find((order) => order.id === id);
+  const orderData = _orders.find((orderItem) => orderItem.id === id);
   
-  const [status, setStatus] = useState(order?.status || 'pending');
-  const [notes, setNotes] = useState(order?.notes || '');
+  const [status, setStatus] = useState(orderData?.status || 'pending');
+  const [notes, setNotes] = useState(orderData?.notes || '');
 
-  if (!order) {
+  const handleStatusChange = useCallback((event: any) => {
+    setStatus(event.target.value);
+    // Here you would typically make an API call to update the order status
+    console.log(`Order ${orderData?.orderNumber} status changed to ${event.target.value}`);
+  }, [orderData?.orderNumber]);
+
+  const handleNotesChange = useCallback((event: any) => {
+    setNotes(event.target.value);
+    // Here you would typically make an API call to update the order notes
+    console.log(`Order ${orderData?.orderNumber} notes updated`);
+  }, [orderData?.orderNumber]);
+
+  const handleSaveChanges = useCallback(() => {
+    // Here you would typically make an API call to save all changes
+    console.log('Saving changes for order:', orderData?.orderNumber);
+    // You can add a success notification here
+  }, [orderData?.orderNumber]);
+
+  const handleBack = useCallback(() => {
+    router.push('/dashboard/orders');
+  }, [router]);
+
+  if (!orderData) {
     return (
       <DashboardContent>
         <Typography variant="h6">Order not found</Typography>
@@ -44,30 +65,8 @@ export default function OrderDetailPage() {
     );
   }
 
-  const handleStatusChange = useCallback((event: any) => {
-    setStatus(event.target.value);
-    // Here you would typically make an API call to update the order status
-    console.log(`Order ${order.orderNumber} status changed to ${event.target.value}`);
-  }, [order.orderNumber]);
-
-  const handleNotesChange = useCallback((event: any) => {
-    setNotes(event.target.value);
-    // Here you would typically make an API call to update the order notes
-    console.log(`Order ${order.orderNumber} notes updated`);
-  }, [order.orderNumber]);
-
-  const handleSaveChanges = useCallback(() => {
-    // Here you would typically make an API call to save all changes
-    console.log('Saving changes for order:', order.orderNumber);
-    // You can add a success notification here
-  }, [order.orderNumber]);
-
-  const handleBack = useCallback(() => {
-    router.push('/dashboard/orders');
-  }, [router]);
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
+  const getStatusColor = (statusValue: string) => {
+    switch (statusValue) {
       case 'pending':
         return 'warning';
       case 'pickup':
@@ -79,8 +78,8 @@ export default function OrderDetailPage() {
     }
   };
 
-  const getStatusLabel = (status: string) => {
-    switch (status) {
+  const getStatusLabel = (statusValue: string) => {
+    switch (statusValue) {
       case 'pending':
         return 'Pending';
       case 'pickup':
@@ -88,7 +87,7 @@ export default function OrderDetailPage() {
       case 'delivered':
         return 'Delivered';
       default:
-        return status;
+        return statusValue;
     }
   };
 
@@ -121,18 +120,18 @@ export default function OrderDetailPage() {
   return (
     <DashboardContent>
       <Breadcrumb 
-        title={`Order ${order.orderNumber}`}
+        title={`Order ${orderData.orderNumber}`}
         items={[
           { title: 'Dashboard', href: '/dashboard' },
           { title: 'Orders', href: '/dashboard/orders' },
-          { title: order.orderNumber }
+          { title: orderData.orderNumber }
         ]} 
       />
 
       <Box sx={{ mb: 3 }}>
         <Button
           variant="outlined"
-          startIcon={<Iconify icon="eva:arrow-back-fill" />}
+          startIcon={<LucideIcon icon="eva:arrow-back-fill" />}
           onClick={handleBack}
           sx={{
             border: '1px solid',
@@ -162,10 +161,10 @@ export default function OrderDetailPage() {
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 4 }}>
           <Box>
             <Typography variant="h4" sx={{ mb: 1, fontWeight: 700, color: 'text.primary' }}>
-              {order.orderNumber}
+              {orderData.orderNumber}
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '1rem' }}>
-              Placed on {new Date(order.orderDate).toLocaleDateString()}
+              Placed on {new Date(orderData.orderDate).toLocaleDateString()}
             </Typography>
           </Box>
           <Stack direction="row" spacing={2} alignItems="center">
@@ -185,7 +184,7 @@ export default function OrderDetailPage() {
             </Label>
             <Label
               variant="soft"
-              color={getPaymentColor(order.paymentStatus)}
+              color={getPaymentColor(orderData.paymentStatus)}
               sx={{
                 textTransform: 'capitalize',
                 fontWeight: 600,
@@ -195,7 +194,7 @@ export default function OrderDetailPage() {
                 borderRadius: 2,
               }}
             >
-              {getPaymentLabel(order.paymentStatus)}
+              {getPaymentLabel(orderData.paymentStatus)}
             </Label>
           </Stack>
         </Stack>
@@ -211,7 +210,7 @@ export default function OrderDetailPage() {
             <TextField
               fullWidth
               label="Customer Name"
-              value={order.customerName}
+              value={orderData.customerName}
               InputProps={{ readOnly: true }}
               sx={{ 
                 mb: 3,
@@ -226,7 +225,7 @@ export default function OrderDetailPage() {
             <TextField
               fullWidth
               label="Email"
-              value={order.customerEmail}
+              value={orderData.customerEmail}
               InputProps={{ readOnly: true }}
               sx={{ 
                 mb: 3,
@@ -241,7 +240,7 @@ export default function OrderDetailPage() {
             <TextField
               fullWidth
               label="Phone"
-              value={order.customerPhone}
+              value={orderData.customerPhone}
               InputProps={{ readOnly: true }}
               sx={{ 
                 mb: 3,
@@ -256,7 +255,7 @@ export default function OrderDetailPage() {
             <TextField
               fullWidth
               label="Address"
-              value={order.customerAddress}
+              value={orderData.customerAddress}
               InputProps={{ readOnly: true }}
               multiline
               rows={4}
@@ -279,7 +278,7 @@ export default function OrderDetailPage() {
           Order Items
         </Typography>
         <Box sx={{ mb: 4 }}>
-          {order.items.map((item, index) => (
+          {orderData.items.map((item, index) => (
             <Paper
               key={item.id}
               elevation={0}
@@ -351,19 +350,19 @@ export default function OrderDetailPage() {
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography variant="body1">Subtotal:</Typography>
                   <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                    ${order.subtotal.toFixed(2)}
+                    ${orderData.subtotal.toFixed(2)}
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography variant="body1">Shipping:</Typography>
                   <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                    ${order.shipping.toFixed(2)}
+                    ${orderData.shipping.toFixed(2)}
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography variant="body1">Tax:</Typography>
                   <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                    ${order.tax.toFixed(2)}
+                    ${orderData.tax.toFixed(2)}
                   </Typography>
                 </Box>
                 <Divider sx={{ my: 1 }} />
@@ -372,7 +371,7 @@ export default function OrderDetailPage() {
                     Total:
                   </Typography>
                   <Typography variant="h6" sx={{ fontWeight: 700, color: 'primary.main' }}>
-                    ${order.total.toFixed(2)}
+                    ${orderData.total.toFixed(2)}
                   </Typography>
                 </Box>
               </Stack>
@@ -398,16 +397,16 @@ export default function OrderDetailPage() {
                     Payment Method
                   </Typography>
                   <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                    {order.paymentMethod}
+                    {orderData.paymentMethod}
                   </Typography>
                 </Box>
-                {order.trackingNumber && (
+                {orderData.trackingNumber && (
                   <Box>
                     <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
                       Tracking Number
                     </Typography>
                     <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                      {order.trackingNumber}
+                      {orderData.trackingNumber}
                     </Typography>
                   </Box>
                 )}
@@ -416,7 +415,7 @@ export default function OrderDetailPage() {
                     Estimated Delivery
                   </Typography>
                   <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                    {order.estimatedDelivery}
+                    {orderData.estimatedDelivery}
                   </Typography>
                 </Box>
                 <Box>
@@ -424,7 +423,7 @@ export default function OrderDetailPage() {
                     Order Date
                   </Typography>
                   <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                    {new Date(order.orderDate).toLocaleDateString()}
+                    {new Date(orderData.orderDate).toLocaleDateString()}
                   </Typography>
                 </Box>
               </Stack>

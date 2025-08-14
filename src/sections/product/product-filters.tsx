@@ -13,8 +13,8 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
-import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
+import { LucideIcon } from 'src/components/lucide-icons';
 import { ColorPicker } from 'src/components/color-utils';
 
 // ----------------------------------------------------------------------
@@ -173,7 +173,7 @@ export function ProductFilters({
         color="inherit"
         endIcon={
           <Badge color="error" variant="dot" invisible={!canReset}>
-            <Iconify icon="ic:round-filter-list" />
+            <LucideIcon icon="ic:round-filter-list" />
           </Badge>
         }
         onClick={onOpenFilter}
@@ -206,12 +206,12 @@ export function ProductFilters({
 
           <IconButton onClick={onResetFilter}>
             <Badge color="error" variant="dot" invisible={!canReset}>
-              <Iconify icon="solar:restart-bold" />
+              <LucideIcon icon="solar:restart-bold" />
             </Badge>
           </IconButton>
 
           <IconButton onClick={onCloseFilter}>
-            <Iconify icon="mingcute:close-line" />
+            <LucideIcon icon="mingcute:close-line" />
           </IconButton>
         </Box>
 

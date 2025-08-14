@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 
-import { Iconify } from 'src/components/iconify';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ export function Searchbar({ sx, ...other }: BoxProps) {
       <div>
         {!open && (
           <IconButton onClick={handleOpen}>
-            <Iconify icon="eva:search-fill" />
+            <LucideIcon icon="eva:search-fill" />
           </IconButton>
         )}
 
@@ -68,7 +68,7 @@ export function Searchbar({ sx, ...other }: BoxProps) {
               placeholder="Search…"
               startAdornment={
                 <InputAdornment position="start">
-                  <Iconify width={20} icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+                  <LucideIcon width={20} icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
                 </InputAdornment>
               }
               sx={{ fontWeight: 'fontWeightBold' }}

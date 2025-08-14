@@ -3,7 +3,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 
-import { Iconify } from 'src/components/iconify';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -24,6 +24,7 @@ export function TableNoData({ searchQuery, onClearFilters, colSpan = 9 }: TableN
             alignItems: 'center',
             gap: 3,
             textAlign: 'center',
+            position: 'relative',
           }}
         >
           {/* Beautiful Icon */}
@@ -40,7 +41,7 @@ export function TableNoData({ searchQuery, onClearFilters, colSpan = 9 }: TableN
               mb: 2,
             }}
           >
-            <Iconify 
+            <LucideIcon 
               icon="eva:search-fill" 
               sx={{ 
                 width: 48, 
@@ -74,7 +75,7 @@ export function TableNoData({ searchQuery, onClearFilters, colSpan = 9 }: TableN
           >
             {searchQuery ? (
               <>
-                We couldn't find any results for &nbsp;
+                We couldn&apos;t find any results for &nbsp;
                 <Box
                   component="span"
                   sx={{
@@ -97,7 +98,31 @@ export function TableNoData({ searchQuery, onClearFilters, colSpan = 9 }: TableN
             )}
           </Typography>
 
-          
+          {/* Action Button */}
+          {onClearFilters && (
+            <Box
+              component="button"
+              onClick={onClearFilters}
+              sx={{
+                mt: 2,
+                px: 3,
+                py: 1.5,
+                borderRadius: 2,
+                border: 'none',
+                background: (theme) => `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+                color: 'white',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: (theme) => `0 8px 25px ${theme.palette.primary.main}40`,
+                },
+              }}
+            >
+              Clear Filters
+            </Box>
+          )}
 
           {/* Decorative Elements */}
           <Box

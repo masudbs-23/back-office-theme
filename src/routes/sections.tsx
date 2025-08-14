@@ -9,8 +9,9 @@ import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgr
 
 import { AuthLayout } from 'src/layouts/auth';
 import { DashboardLayout } from 'src/layouts/dashboard';
-import { ProtectedRoute } from 'src/components/protected-route';
+
 import { AuthRedirect } from 'src/components/auth-redirect';
+import { ProtectedRoute } from 'src/components/protected-route';
 
 // ----------------------------------------------------------------------
 

@@ -1,5 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { authService, foodService } from '../api/services';
+
 import type { LoginRequest, RegisterRequest, VerifyOtpRequest } from '../api/types';
 
 // Query keys
@@ -24,11 +26,9 @@ export const useLogin = () => {
   });
 };
 
-export const useRegister = () => {
-  return useMutation({
+export const useRegister = () => useMutation({
     mutationFn: (userData: RegisterRequest) => authService.register(userData),
   });
-};
 
 export const useVerifyOtp = () => {
   const queryClient = useQueryClient();
@@ -46,14 +46,12 @@ export const useVerifyOtp = () => {
 };
 
 // Food queries
-export const useFoods = () => {
-  return useQuery({
+export const useFoods = () => useQuery({
     queryKey: queryKeys.foods,
     queryFn: () => foodService.getFoods(),
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
   });
-};
 
 // Utility hook for logout
 export const useLogout = () => {

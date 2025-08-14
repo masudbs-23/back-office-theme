@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -8,7 +8,9 @@ import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { useRouter } from 'src/routes/hooks';
+
 import { useAuth } from 'src/contexts/AuthContext';
+
 import { ErrorAlert } from 'src/components/error-alert';
 
 // ----------------------------------------------------------------------
@@ -139,7 +141,7 @@ export function VerifyOtpView() {
           width: '100%',
         }}
       >
-        We've sent a verification code to your email
+        We&apos;ve sent a verification code to your email
       </Typography>
 
       {renderOtpInputs}
@@ -185,7 +187,7 @@ export function VerifyOtpView() {
              mb: 2,
            }}
          >
-           Didn't receive the code?
+           Didn&apos;t receive the code?
            <Link variant="subtitle2" sx={{ ml: 0.5, cursor: 'pointer' }} onClick={handleResendOtp}>
              Resend
            </Link>

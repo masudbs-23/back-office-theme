@@ -5,19 +5,18 @@ import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
 import TableBody from '@mui/material/TableBody';
-import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { DashboardContent } from 'src/layouts/dashboard';
-
-import { Iconify } from 'src/components/iconify';
-import { Scrollbar } from 'src/components/scrollbar';
-import { Breadcrumb } from 'src/components/breadcrumb';
-
 import { useRouter } from 'src/routes/hooks';
 
+import { DashboardContent } from 'src/layouts/dashboard';
+
+import { Scrollbar } from 'src/components/scrollbar';
+import { Breadcrumb } from 'src/components/breadcrumb';
+import { LucideIcon } from 'src/components/lucide-icons';
 import { TableNoData } from 'src/components/table-no-data';
+
 import { BlogTableRow } from '../blog-table-row';
 import { BlogTableHead } from '../blog-table-head';
 import { TableEmptyRows } from '../table-empty-rows';
@@ -76,7 +75,7 @@ export function BlogView({ posts }: Props) {
         <Button
           variant="contained"
           color="inherit"
-          startIcon={<Iconify icon="mingcute:add-line" />}
+          startIcon={<LucideIcon icon="mingcute:add-line" />}
           onClick={handleNewPost}
         >
           New post
@@ -115,7 +114,7 @@ export function BlogView({ posts }: Props) {
                   { id: 'postedAt', label: 'Date' },
                   { id: 'totalViews', label: 'Views', align: 'center' },
                   { id: 'totalComments', label: 'Comments', align: 'center' },
-                  { id: '' },
+                  { id: 'actions', label: '' },
                 ]}
               />
               <TableBody>

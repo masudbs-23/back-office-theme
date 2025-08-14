@@ -1,5 +1,4 @@
 import type { CardProps } from '@mui/material/Card';
-import type { IconifyName } from 'src/components/iconify';
 
 import { varAlpha } from 'minimal-shared/utils';
 
@@ -9,12 +8,13 @@ import Card from '@mui/material/Card';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
+import { useRouter } from 'src/routes/hooks';
+
 import { fDate } from 'src/utils/format-time';
 import { fShortenNumber } from 'src/utils/format-number';
 
-import { Iconify } from 'src/components/iconify';
 import { SvgColor } from 'src/components/svg-color';
-import { useRouter } from 'src/routes/hooks';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -113,7 +113,7 @@ export function PostItem({
             }),
           }}
         >
-          <Iconify width={16} icon={info.icon as IconifyName} sx={{ mr: 0.5 }} />
+                            <LucideIcon width={16} icon={info.icon} sx={{ mr: 0.5 }} />
           <Typography variant="caption">{fShortenNumber(info.number)}</Typography>
         </Box>
       ))}

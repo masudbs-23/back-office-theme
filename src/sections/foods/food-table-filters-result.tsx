@@ -1,10 +1,12 @@
+import type { StackProps } from '@mui/material/Stack';
+
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Stack, { StackProps } from '@mui/material/Stack';
 
-import { Iconify } from 'src/components/iconify';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -76,7 +78,7 @@ export function FoodTableFiltersResult({
           <Button
             color="error"
             onClick={onResetFilters}
-            startIcon={<Iconify icon="solar:trash-bin-trash-bold" />}
+            startIcon={<LucideIcon icon="solar:trash-bin-trash-bold" />}
           >
             Clear
           </Button>

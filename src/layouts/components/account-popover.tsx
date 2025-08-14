@@ -13,10 +13,11 @@ import IconButton from '@mui/material/IconButton';
 import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 
 import { useRouter, usePathname } from 'src/routes/hooks';
-import { useAuth } from 'src/contexts/AuthContext';
 
 import { _myAccount } from 'src/_mock';
-import { Iconify } from 'src/components/iconify';
+import { useAuth } from 'src/contexts/AuthContext';
+
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -144,7 +145,7 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
             size="medium" 
             variant="text"
             onClick={handleLogout}
-            startIcon={<Iconify icon="eva:log-out-fill" />}
+            startIcon={<LucideIcon icon="eva:log-out-fill" />}
             sx={{
               justifyContent: 'flex-start',
               '&:hover': {

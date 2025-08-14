@@ -1,4 +1,3 @@
-import { isEqual } from 'lodash';
 
 import type { BlogTableRowProps } from './blog-table-row';
 

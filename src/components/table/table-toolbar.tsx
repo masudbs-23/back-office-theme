@@ -1,11 +1,8 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import { alpha } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
 
-import { Iconify } from 'src/components/iconify';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -39,7 +36,7 @@ export function TableToolbar({ filters, actions, onFilters, onResetFilters, resu
           <Button
             color="inherit"
             variant="outlined"
-            startIcon={<Iconify icon="ic:round-filter-list" />}
+            startIcon={<LucideIcon icon="ic:round-filter-list" />}
             onClick={onFilters}
           >
             Filters

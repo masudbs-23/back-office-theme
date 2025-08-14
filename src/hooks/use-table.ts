@@ -119,7 +119,7 @@ export function useTable(defaultOrderBy?: string, defaultOrder?: Order, defaultR
   const onUpdatePageDeleteRow = useCallback(
     (dataLength: number) => {
       const selectedIndex = selected.indexOf('id');
-      let newSelected: string[] = [...selected];
+      const newSelected: string[] = [...selected];
 
       if (selectedIndex > -1) {
         newSelected.splice(selectedIndex, 1);

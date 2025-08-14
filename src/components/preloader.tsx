@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import Box from '@mui/material/Box';
 
 import { Logo } from './logo';
@@ -20,6 +21,7 @@ export function Preloader({ isLoading = true, onComplete }: PreloaderProps) {
 
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [isLoading, onComplete]);
 
   if (!isLoading) {

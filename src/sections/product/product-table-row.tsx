@@ -7,15 +7,16 @@ import Checkbox from '@mui/material/Checkbox';
 import MenuList from '@mui/material/MenuList';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
-import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
+import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 
-import { Label } from 'src/components/label';
-import { Iconify } from 'src/components/iconify';
-import { ColorPreview } from 'src/components/color-utils';
 import { useRouter } from 'src/routes/hooks';
 
 import { fCurrency } from 'src/utils/format-number';
+
+import { Label } from 'src/components/label';
+import { LucideIcon } from 'src/components/lucide-icons';
+import { ColorPreview } from 'src/components/color-utils';
 
 // ----------------------------------------------------------------------
 
@@ -122,7 +123,7 @@ export function ProductTableRow({ row, selected, onSelectRow }: ProductTableRowC
 
         <TableCell align="right">
           <IconButton onClick={handleOpenPopover}>
-            <Iconify icon="eva:more-vertical-fill" />
+            <LucideIcon icon="eva:more-vertical-fill" />
           </IconButton>
         </TableCell>
       </TableRow>
@@ -151,12 +152,12 @@ export function ProductTableRow({ row, selected, onSelectRow }: ProductTableRowC
           }}
         >
           <MenuItem onClick={handleEdit}>
-            <Iconify icon="solar:pen-bold" />
+            <LucideIcon icon="solar:pen-bold" />
             Edit
           </MenuItem>
 
           <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
-            <Iconify icon="solar:trash-bin-trash-bold" />
+            <LucideIcon icon="solar:trash-bin-trash-bold" />
             Delete
           </MenuItem>
         </MenuList>

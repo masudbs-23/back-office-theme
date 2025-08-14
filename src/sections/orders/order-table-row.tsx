@@ -1,26 +1,20 @@
+import type { _orders } from 'src/_mock';
+
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import ListItemText from '@mui/material/ListItemText';
-import LinearProgress from '@mui/material/LinearProgress';
 import { alpha, useTheme } from '@mui/material/styles';
 
 import { useRouter } from 'src/routes/hooks';
 
-import { Iconify } from 'src/components/iconify';
 import { Label } from 'src/components/label';
-
-import { _orders } from 'src/_mock';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -47,8 +41,8 @@ export function OrderTableRow({ row, selected, onSelectRow }: OrderTableRowProps
     router.push(`/dashboard/orders/${row.id}`);
   }, [router, row.id]);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
+  const getStatusColor = (statusValue: string) => {
+    switch (statusValue) {
       case 'pending':
         return 'warning';
       case 'pickup':
@@ -60,8 +54,8 @@ export function OrderTableRow({ row, selected, onSelectRow }: OrderTableRowProps
     }
   };
 
-  const getStatusLabel = (status: string) => {
-    switch (status) {
+  const getStatusLabel = (statusValue: string) => {
+    switch (statusValue) {
       case 'pending':
         return 'Pending';
       case 'pickup':
@@ -69,7 +63,7 @@ export function OrderTableRow({ row, selected, onSelectRow }: OrderTableRowProps
       case 'delivered':
         return 'Delivered';
       default:
-        return status;
+        return statusValue;
     }
   };
 
@@ -302,7 +296,7 @@ export function OrderTableRow({ row, selected, onSelectRow }: OrderTableRowProps
             },
           }}
         >
-          <Iconify icon="eva:eye-fill" sx={{ fontSize: 18 }} />
+          <LucideIcon icon="eva:eye-fill" sx={{ fontSize: 18 }} />
         </IconButton>
       </TableCell>
     </TableRow>

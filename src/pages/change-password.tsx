@@ -6,12 +6,12 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
+import { useRouter } from 'src/routes/hooks';
+
 import { DashboardContent } from 'src/layouts/dashboard';
 
 import { Breadcrumb } from 'src/components/breadcrumb';
-import { Iconify } from 'src/components/iconify';
-
-import { useRouter } from 'src/routes/hooks';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -79,7 +79,7 @@ export default function ChangePasswordView() {
           variant="outlined"
           size="large"
           onClick={() => router.push('/dashboard')}
-          startIcon={<Iconify icon="eva:arrow-back-fill" />}
+          startIcon={<LucideIcon icon="eva:arrow-back-fill" />}
           sx={{
             borderColor: 'grey.400',
             color: 'grey.700',
@@ -119,7 +119,7 @@ export default function ChangePasswordView() {
                     onClick={() => handleTogglePasswordVisibility('current')}
                     sx={{ minWidth: 'auto', p: 1 }}
                   >
-                    <Iconify 
+                    <LucideIcon 
                       icon={showPasswords.current ? 'eva:eye-off-fill' : 'eva:eye-fill'} 
                       width={20} 
                     />
@@ -143,7 +143,7 @@ export default function ChangePasswordView() {
                     onClick={() => handleTogglePasswordVisibility('new')}
                     sx={{ minWidth: 'auto', p: 1 }}
                   >
-                    <Iconify 
+                    <LucideIcon 
                       icon={showPasswords.new ? 'eva:eye-off-fill' : 'eva:eye-fill'} 
                       width={20} 
                     />
@@ -167,7 +167,7 @@ export default function ChangePasswordView() {
                     onClick={() => handleTogglePasswordVisibility('confirm')}
                     sx={{ minWidth: 'auto', p: 1 }}
                   >
-                    <Iconify 
+                    <LucideIcon 
                       icon={showPasswords.confirm ? 'eva:eye-off-fill' : 'eva:eye-fill'} 
                       width={20} 
                     />

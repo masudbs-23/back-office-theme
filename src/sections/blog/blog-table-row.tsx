@@ -8,14 +8,15 @@ import Checkbox from '@mui/material/Checkbox';
 import MenuList from '@mui/material/MenuList';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
-import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
+import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 
-import { Iconify } from 'src/components/iconify';
 import { useRouter } from 'src/routes/hooks';
 
 import { fDate } from 'src/utils/format-time';
 import { fShortenNumber } from 'src/utils/format-number';
+
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -123,7 +124,7 @@ export function BlogTableRow({ row, selected, onSelectRow }: BlogTableRowCompone
 
         <TableCell align="right">
           <IconButton onClick={handleOpenPopover}>
-            <Iconify icon="eva:more-vertical-fill" />
+            <LucideIcon icon="eva:more-vertical-fill" />
           </IconButton>
         </TableCell>
       </TableRow>
@@ -152,12 +153,12 @@ export function BlogTableRow({ row, selected, onSelectRow }: BlogTableRowCompone
           }}
         >
           <MenuItem onClick={handleEdit}>
-            <Iconify icon="solar:pen-bold" />
+            <LucideIcon icon="solar:pen-bold" />
             Edit
           </MenuItem>
 
           <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
-            <Iconify icon="solar:trash-bin-trash-bold" />
+            <LucideIcon icon="solar:trash-bin-trash-bold" />
             Delete
           </MenuItem>
         </MenuList>

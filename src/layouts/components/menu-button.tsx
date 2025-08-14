@@ -2,14 +2,14 @@ import type { IconButtonProps } from '@mui/material/IconButton';
 
 import IconButton from '@mui/material/IconButton';
 
-import { Iconify } from 'src/components/iconify';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
 export function MenuButton({ sx, ...other }: IconButtonProps) {
   return (
     <IconButton sx={sx} {...other}>
-      <Iconify icon="custom:menu-duotone" width={24} />
+      <LucideIcon icon="custom:menu-duotone" width={24} />
     </IconButton>
   );
 }

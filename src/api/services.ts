@@ -1,11 +1,12 @@
 import apiClient from './config';
 import { AUTH_ENDPOINTS, FOOD_ENDPOINTS } from './endpoints';
+
 import type {
   LoginRequest,
-  RegisterRequest,
-  VerifyOtpRequest,
   AuthResponse,
   FoodsResponse,
+  RegisterRequest,
+  VerifyOtpRequest,
 } from './types';
 
 // Auth services

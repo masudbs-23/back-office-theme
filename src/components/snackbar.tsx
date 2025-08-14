@@ -1,12 +1,10 @@
-import { useState, useCallback } from 'react';
-import { createContext, useContext } from 'react';
+import { useState, useContext , useCallback, createContext } from 'react';
 
-import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 
-import { Iconify } from './iconify';
+import { LucideIcon } from './lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -90,10 +88,10 @@ export function SnackbarProvider({ children }: { children: React.ReactNode }) {
               size="small"
               onClick={handleClose}
             >
-              <Iconify icon="solar:close-bold" />
+              <LucideIcon icon="solar:close-bold" />
             </IconButton>
           }
-          icon={<Iconify icon={getIcon(type)} />}
+          icon={<LucideIcon icon={getIcon(type)} />}
         >
           {message}
         </Alert>

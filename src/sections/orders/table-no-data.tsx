@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
-import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 
-import { Iconify } from 'src/components/iconify';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ export function TableNoData({ searchQuery }: TableNoDataProps) {
     <TableRow>
       <TableCell colSpan={9} align="center" sx={{ py: 6 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-          <Iconify 
+          <LucideIcon 
             icon="eva:file-text-outline" 
             sx={{ 
               fontSize: 64, 

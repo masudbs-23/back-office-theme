@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useRef, useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -6,12 +6,12 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
+import { useRouter } from 'src/routes/hooks';
+
 import { DashboardContent } from 'src/layouts/dashboard';
 
 import { Breadcrumb } from 'src/components/breadcrumb';
-import { Iconify } from 'src/components/iconify';
-
-import { useRouter } from 'src/routes/hooks';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -73,7 +73,7 @@ export function NewBlogView() {
           variant="outlined"
           size="large"
           onClick={() => router.push('/dashboard/blog')}
-          startIcon={<Iconify icon="eva:arrow-back-fill" />}
+          startIcon={<LucideIcon icon="eva:arrow-back-fill" />}
           sx={{
             borderColor: 'grey.400',
             color: 'grey.700',
@@ -162,7 +162,7 @@ export function NewBlogView() {
                   />
                 ) : (
                   <Box sx={{ textAlign: 'center' }}>
-                    <Iconify icon="eva:cloud-upload-fill" sx={{ fontSize: 48, color: 'grey.400', mb: 1 }} />
+                    <LucideIcon icon="eva:cloud-upload-fill" sx={{ fontSize: 48, color: 'grey.400', mb: 1 }} />
                     <Typography variant="body2" color="text.secondary">
                       Click to upload image
                     </Typography>

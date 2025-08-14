@@ -1,25 +1,25 @@
-import { useState, useCallback, useRef } from 'react';
+import { useRef, useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
+
+import { useRouter } from 'src/routes/hooks';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 
 import { Breadcrumb } from 'src/components/breadcrumb';
-import { Iconify } from 'src/components/iconify';
-
-import { useRouter } from 'src/routes/hooks';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -141,7 +141,7 @@ export function NewProductView() {
           variant="outlined"
           size="large"
           onClick={() => router.push('/dashboard/products')}
-          startIcon={<Iconify icon="eva:arrow-back-fill" />}
+          startIcon={<LucideIcon icon="eva:arrow-back-fill" />}
           sx={{
             borderColor: 'grey.400',
             color: 'grey.700',
@@ -422,7 +422,7 @@ export function NewProductView() {
                               handleRemoveImage(index);
                             }}
                           >
-                            <Iconify icon="eva:close-fill" width={16} />
+                            <LucideIcon icon="eva:close-fill" width={16} />
                           </Button>
                         </Box>
                       </Grid>
@@ -430,7 +430,7 @@ export function NewProductView() {
                   </Grid>
                 ) : (
                   <Box sx={{ textAlign: 'center' }}>
-                    <Iconify icon="eva:cloud-upload-fill" sx={{ fontSize: 48, color: 'grey.400', mb: 1 }} />
+                    <LucideIcon icon="eva:cloud-upload-fill" sx={{ fontSize: 48, color: 'grey.400', mb: 1 }} />
                     <Typography variant="body2" color="text.secondary">
                       Click to upload images
                     </Typography>

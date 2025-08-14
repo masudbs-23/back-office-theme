@@ -1,16 +1,14 @@
-import { useState } from 'react';
 
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import { Iconify } from 'src/components/iconify';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -65,7 +63,7 @@ export function OrderTableToolbar({
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+                  <LucideIcon icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
                 </InputAdornment>
               ),
             }}
@@ -124,7 +122,7 @@ export function OrderTableToolbar({
              <Button
                color="error"
                variant="outlined"
-               startIcon={<Iconify icon="eva:close-fill" />}
+               startIcon={<LucideIcon icon="eva:close-fill" />}
                onClick={onClearFilters}
                sx={{
                  borderRadius: 2,
@@ -150,7 +148,7 @@ export function OrderTableToolbar({
           <Button
             color="error"
             variant="outlined"
-            startIcon={<Iconify icon="eva:trash-2-fill" />}
+            startIcon={<LucideIcon icon="eva:trash-2-fill" />}
             sx={{
               borderRadius: 2,
               px: 3,

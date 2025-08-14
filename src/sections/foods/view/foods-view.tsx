@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -6,27 +6,26 @@ import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
 import { alpha } from '@mui/material/styles';
 import TableBody from '@mui/material/TableBody';
+import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
-import Typography from '@mui/material/Typography';
-
-import { useTable, getComparator } from 'src/hooks/use-table';
-
-import { useFoods } from 'src/hooks/useApi';
-import { FoodTableHead } from '../food-table-head';
-import { TableEmptyRows, TableNoData } from 'src/components/table';
-import { Breadcrumb } from 'src/components/breadcrumb';
-import { Scrollbar } from 'src/components/scrollbar';
-import { DashboardContent } from 'src/layouts/dashboard';
-
-import { Iconify } from 'src/components/iconify';
 
 import { useRouter } from 'src/routes/hooks';
 
+import { useFoods } from 'src/hooks/useApi';
+import { useTable, getComparator } from 'src/hooks/use-table';
+
+import { DashboardContent } from 'src/layouts/dashboard';
+
+import { Scrollbar } from 'src/components/scrollbar';
+import { Breadcrumb } from 'src/components/breadcrumb';
+import { LucideIcon } from 'src/components/lucide-icons';
+import { TableNoData, TableEmptyRows } from 'src/components/table';
+
 import { FoodTableRow } from '../food-table-row';
+import { FoodTableHead } from '../food-table-head';
 import { FoodTableToolbar } from '../food-table-toolbar';
-import { FoodTableFiltersResult } from '../food-table-filters-result';
 
 // ----------------------------------------------------------------------
 
@@ -36,7 +35,7 @@ const TABLE_HEAD = [
   { id: 'category', label: 'Category' },
   { id: 'available', label: 'Available' },
   { id: 'createdAt', label: 'Created At' },
-  { id: '' },
+                    { id: 'actions', label: '' },
 ];
 
 
@@ -114,7 +113,7 @@ export function FoodsView() {
           <Button
             variant="contained"
             color="inherit"
-            startIcon={<Iconify icon="mingcute:add-line" />}
+            startIcon={<LucideIcon icon="mingcute:add-line" />}
             onClick={handleNewFood}
           >
             New Food
@@ -167,7 +166,7 @@ export function FoodsView() {
           <Button
             variant="contained"
             color="inherit"
-            startIcon={<Iconify icon="mingcute:add-line" />}
+            startIcon={<LucideIcon icon="mingcute:add-line" />}
             onClick={handleNewFood}
           >
             New Food
@@ -219,7 +218,7 @@ export function FoodsView() {
         <Button
           variant="contained"
           color="inherit"
-          startIcon={<Iconify icon="mingcute:add-line" />}
+          startIcon={<LucideIcon icon="mingcute:add-line" />}
           onClick={handleNewFood}
         >
           New Food

@@ -1,4 +1,7 @@
-import { createContext, useContext, useReducer, ReactNode, useEffect } from 'react';
+import type { ReactNode} from 'react';
+
+import { useEffect, useContext, useReducer, createContext } from 'react';
+
 import type { AuthResponse } from '../api/types';
 
 interface User {
@@ -153,7 +156,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         // Create user object from available data
         const user: User = {
           id: data.user?.id || 'unknown',
-          email: email,
+          email,
           name: data.user?.name,
           role: data.role,
         };
@@ -227,7 +230,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         // Create user object from available data
         const user: User = {
           id: data.user?.id || 'unknown',
-          email: email,
+          email,
           name: data.user?.name,
           role: data.role,
         };

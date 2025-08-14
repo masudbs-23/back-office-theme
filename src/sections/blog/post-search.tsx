@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
 
-import { Iconify } from 'src/components/iconify';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 import type { IPostItem } from './post-item';
 
@@ -44,7 +44,7 @@ export function PostSearch({ posts, sx }: PostSearchProps) {
               ...params.InputProps,
               startAdornment: (
                 <InputAdornment position="start">
-                  <Iconify
+                  <LucideIcon
                     icon="eva:search-fill"
                     sx={{ ml: 1, width: 20, height: 20, color: 'text.disabled' }}
                   />

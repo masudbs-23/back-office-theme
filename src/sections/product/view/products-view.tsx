@@ -5,23 +5,22 @@ import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
 import TableBody from '@mui/material/TableBody';
-import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
+
+import { useRouter } from 'src/routes/hooks';
 
 import { _products } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
 
-import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { Breadcrumb } from 'src/components/breadcrumb';
-
-import { useRouter } from 'src/routes/hooks';
-
+import { LucideIcon } from 'src/components/lucide-icons';
 import { TableNoData } from 'src/components/table-no-data';
+
+import { TableEmptyRows } from '../table-empty-rows';
 import { ProductTableRow } from '../product-table-row';
 import { ProductTableHead } from '../product-table-head';
-import { TableEmptyRows } from '../table-empty-rows';
 import { ProductTableToolbar } from '../product-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
@@ -73,7 +72,7 @@ export function ProductsView() {
         <Button
           variant="contained"
           color="inherit"
-          startIcon={<Iconify icon="mingcute:add-line" />}
+          startIcon={<LucideIcon icon="mingcute:add-line" />}
           onClick={handleNewProduct}
         >
           New product
@@ -111,7 +110,7 @@ export function ProductsView() {
                   { id: 'colors', label: 'Colors' },
                   { id: 'price', label: 'Price' },
                   { id: 'status', label: 'Status' },
-                  { id: '' },
+                  { id: 'actions', label: '' },
                 ]}
               />
               <TableBody>

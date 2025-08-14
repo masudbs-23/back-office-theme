@@ -1,28 +1,27 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRef, useState, useEffect, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
+import { useRouter } from 'src/routes/hooks';
+
+import { _users } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
 
-import { Breadcrumb } from 'src/components/breadcrumb';
-import { Iconify } from 'src/components/iconify';
-
-import { useRouter } from 'src/routes/hooks';
-import { useParams } from 'react-router-dom';
 import { useSnackbar } from 'src/components/snackbar';
-import { _users } from 'src/_mock';
+import { Breadcrumb } from 'src/components/breadcrumb';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -159,7 +158,7 @@ export default function UserDetailPage() {
              <Box sx={{ display: 'flex', gap: 3, mb: 3 }}>
          <Button
            variant="outlined"
-           startIcon={<Iconify icon="eva:arrow-ios-back-fill" />}
+           startIcon={<LucideIcon icon="eva:arrow-ios-back-fill" />}
            onClick={() => router.back()}
            sx={{
              borderColor: 'grey.400',
@@ -197,7 +196,7 @@ export default function UserDetailPage() {
 
           <Button
             variant="outlined"
-            startIcon={<Iconify icon="eva:plus-fill" />}
+            startIcon={<LucideIcon icon="eva:plus-fill" />}
             onClick={handleImageClick}
           >
             Change Photo

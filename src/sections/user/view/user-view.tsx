@@ -1,31 +1,30 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
 import TableBody from '@mui/material/TableBody';
-import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
+
+import { useRouter } from 'src/routes/hooks';
 
 import { _users } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
 
-import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
+import { useSnackbar } from 'src/components/snackbar';
 import { Breadcrumb } from 'src/components/breadcrumb';
-
-import { useRouter } from 'src/routes/hooks';
-import { useSearchParams } from 'react-router-dom';
-
+import { LucideIcon } from 'src/components/lucide-icons';
 import { TableNoData } from 'src/components/table-no-data';
+
 import { UserTableRow } from '../user-table-row';
 import { UserTableHead } from '../user-table-head';
 import { TableEmptyRows } from '../table-empty-rows';
 import { UserTableToolbar } from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
-import { useSnackbar } from 'src/components/snackbar';
 
 import type { UserProps } from '../user-table-row';
 
@@ -104,7 +103,7 @@ export function UserView() {
         <Button
           variant="contained"
           color="inherit"
-          startIcon={<Iconify icon="mingcute:add-line" />}
+          startIcon={<LucideIcon icon="mingcute:add-line" />}
           onClick={handleNewUser}
         >
           New user
@@ -143,7 +142,7 @@ export function UserView() {
                   { id: 'role', label: 'Role' },
                   { id: 'isVerified', label: 'Verified', align: 'center' },
                   { id: 'status', label: 'Status' },
-                  { id: '' },
+                  { id: 'actions', label: '' },
                 ]}
               />
               <TableBody>

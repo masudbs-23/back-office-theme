@@ -1,16 +1,17 @@
 import 'src/global.css';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { usePathname } from 'src/routes/hooks';
 
-import { ThemeProvider } from 'src/theme/theme-provider';
-import { ScrollProgress } from 'src/components/scroll-progress';
-import { SnackbarProvider } from 'src/components/snackbar';
-import { Preloader } from 'src/components/preloader';
-import { PreloaderProvider } from 'src/components/preloader-context';
 import { AuthProvider } from 'src/contexts/AuthContext';
+import { ThemeProvider } from 'src/theme/theme-provider';
+
+import { Preloader } from 'src/components/preloader';
+import { SnackbarProvider } from 'src/components/snackbar';
+import { ScrollProgress } from 'src/components/scroll-progress';
+import { PreloaderProvider } from 'src/components/preloader-context';
 
 // ----------------------------------------------------------------------
 

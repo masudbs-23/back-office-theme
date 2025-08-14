@@ -1,7 +1,6 @@
 import { forwardRef } from 'react';
 
 import Box from '@mui/material/Box';
-import Tooltip from '@mui/material/Tooltip';
 import Checkbox from '@mui/material/Checkbox';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';

@@ -1,12 +1,12 @@
+import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { Iconify } from 'src/components/iconify';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ export function BlogTableToolbar({ numSelected, filterName, onFilterName, onClea
             placeholder="Search blog..."
             startAdornment={
               <InputAdornment position="start">
-                <Iconify width={20} icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+                <LucideIcon width={20} icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
               </InputAdornment>
             }
             sx={{ maxWidth: 320 }}
@@ -49,7 +49,7 @@ export function BlogTableToolbar({ numSelected, filterName, onFilterName, onClea
             <Button
               color="error"
               variant="outlined"
-              startIcon={<Iconify icon="eva:close-fill" />}
+              startIcon={<LucideIcon icon="eva:close-fill" />}
               onClick={onClearFilters}
               sx={{
                 borderRadius: 2,
@@ -75,7 +75,7 @@ export function BlogTableToolbar({ numSelected, filterName, onFilterName, onClea
              {numSelected > 0 && (
          <Tooltip title="Delete">
            <IconButton sx={{ color: 'error.main' }}>
-             <Iconify icon="solar:trash-bin-trash-bold" />
+             <LucideIcon icon="solar:trash-bin-trash-bold" />
            </IconButton>
          </Tooltip>
        )}

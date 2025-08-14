@@ -1,6 +1,4 @@
-import { type ReactElement } from 'react';
 
-import Box from '@mui/material/Box';
 
 // ----------------------------------------------------------------------
 

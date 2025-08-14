@@ -1,8 +1,12 @@
-import { ReactNode, useEffect } from 'react';
+import type { ReactNode} from 'react';
+
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from 'src/contexts/AuthContext';
+
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+
+import { useAuth } from 'src/contexts/AuthContext';
 
 interface AuthRedirectProps {
   children: ReactNode;

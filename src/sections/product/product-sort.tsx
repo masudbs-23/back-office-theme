@@ -8,7 +8,7 @@ import MenuList from '@mui/material/MenuList';
 import Typography from '@mui/material/Typography';
 import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 
-import { Iconify } from 'src/components/iconify';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -36,7 +36,7 @@ export function ProductSort({ options, sortBy, onSort, sx, ...other }: ProductSo
         color="inherit"
         onClick={handleOpenPopover}
         endIcon={
-          <Iconify
+          <LucideIcon
             icon={openPopover ? 'eva:arrow-ios-upward-fill' : 'eva:arrow-ios-downward-fill'}
           />
         }

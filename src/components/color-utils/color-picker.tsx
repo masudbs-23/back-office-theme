@@ -6,7 +6,7 @@ import { varAlpha, mergeClasses } from 'minimal-shared/utils';
 import ButtonBase from '@mui/material/ButtonBase';
 import { styled, alpha as hexAlpha } from '@mui/material/styles';
 
-import { Iconify } from '../iconify';
+import { LucideIcon } from '../lucide-icons';
 import { colorPickerClasses } from './classes';
 
 // ----------------------------------------------------------------------
@@ -158,7 +158,7 @@ const ItemContainer = styled('span', {
   ],
 }));
 
-const ItemIcon = styled(Iconify, {
+const ItemIcon = styled(LucideIcon, {
   shouldForwardProp: (prop: string) => !['color', 'hasSelected', 'sx'].includes(prop),
 })<{ color: string; hasSelected: boolean }>(({ color, theme }) => ({
   width: 0,

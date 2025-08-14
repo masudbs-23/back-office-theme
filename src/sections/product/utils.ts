@@ -1,4 +1,3 @@
-import { isEqual } from 'lodash';
 
 import type { ProductTableRowProps } from './product-table-row';
 

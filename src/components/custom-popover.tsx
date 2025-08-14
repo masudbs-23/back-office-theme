@@ -1,7 +1,9 @@
-import { forwardRef, useState, useCallback } from 'react';
+import type { PopoverProps } from '@mui/material/Popover';
+
+import { useState, forwardRef, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
-import Popover, { PopoverProps } from '@mui/material/Popover';
+import Popover from '@mui/material/Popover';
 
 // ----------------------------------------------------------------------
 

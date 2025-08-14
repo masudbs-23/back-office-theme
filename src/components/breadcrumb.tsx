@@ -1,10 +1,10 @@
-import { useRouter } from 'src/routes/hooks';
-
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 
-import { Iconify } from 'src/components/iconify';
+import { useRouter } from 'src/routes/hooks';
+
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ export function Breadcrumb({ title, items = [] }: BreadcrumbProps) {
         {items.map((item, index) => (
           <Box key={item.title} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             {index > 0 && (
-              <Iconify icon="eva:chevron-right-fill" sx={{ color: 'text.disabled' }} />
+              <LucideIcon icon="eva:chevron-right-fill" sx={{ color: 'text.disabled' }} />
             )}
             {item.href ? (
               <Link

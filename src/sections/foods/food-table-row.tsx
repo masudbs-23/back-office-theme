@@ -1,5 +1,8 @@
+import type { Food } from 'src/api/types';
+
 import { useState, useCallback } from 'react';
 
+import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Popover from '@mui/material/Popover';
 import TableRow from '@mui/material/TableRow';
@@ -8,13 +11,11 @@ import MenuList from '@mui/material/MenuList';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
-import Box from '@mui/material/Box';
 
-import { Label, labelClasses } from 'src/components/label';
-import { Iconify } from 'src/components/iconify';
 import { useRouter } from 'src/routes/hooks';
 
-import type { Food } from 'src/api/types';
+import { LucideIcon } from 'src/components/lucide-icons';
+import { Label, labelClasses } from 'src/components/label';
 
 // ----------------------------------------------------------------------
 
@@ -107,7 +108,7 @@ export function FoodTableRow({
 
         <TableCell align="right">
           <IconButton onClick={handleOpenPopover}>
-            <Iconify icon="solar:eye-bold" />
+            <LucideIcon icon="solar:eye-bold" />
           </IconButton>
         </TableCell>
       </TableRow>
@@ -136,12 +137,12 @@ export function FoodTableRow({
           }}
         >
           <MenuItem onClick={handleEdit}>
-            <Iconify icon="solar:pen-bold" />
+            <LucideIcon icon="solar:pen-bold" />
             Edit
           </MenuItem>
 
           <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
-            <Iconify icon="solar:trash-bin-trash-bold" />
+            <LucideIcon icon="solar:trash-bin-trash-bold" />
             Delete
           </MenuItem>
         </MenuList>

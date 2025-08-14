@@ -3,18 +3,17 @@ import { useState, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import Avatar from '@mui/material/Avatar';
-
-import { DashboardContent } from 'src/layouts/dashboard';
-
-import { Breadcrumb } from 'src/components/breadcrumb';
-import { Iconify } from 'src/components/iconify';
 
 import { useRouter } from 'src/routes/hooks';
 
 import { _myAccount } from 'src/_mock';
+import { DashboardContent } from 'src/layouts/dashboard';
+
+import { Breadcrumb } from 'src/components/breadcrumb';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -60,7 +59,7 @@ export default function ProfileView() {
           variant="outlined"
           size="large"
           onClick={() => router.push('/dashboard')}
-          startIcon={<Iconify icon="eva:arrow-back-fill" />}
+          startIcon={<LucideIcon icon="eva:arrow-back-fill" />}
           sx={{
             borderColor: 'grey.400',
             color: 'grey.700',

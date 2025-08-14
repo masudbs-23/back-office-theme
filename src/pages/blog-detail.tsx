@@ -1,23 +1,23 @@
-import { useState, useCallback, useRef } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRef, useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import Chip from '@mui/material/Chip';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+
+import { useRouter } from 'src/routes/hooks';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 
 import { Breadcrumb } from 'src/components/breadcrumb';
-import { Iconify } from 'src/components/iconify';
-
-import { useRouter } from 'src/routes/hooks';
-import { useParams } from 'react-router-dom';
+import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
 
@@ -144,7 +144,7 @@ These trends are not just passing fads but fundamental shifts in how we approach
              <Box sx={{ display: 'flex', gap: 3, mb: 3 }}>
          <Button
            variant="outlined"
-           startIcon={<Iconify icon="eva:arrow-ios-back-fill" />}
+           startIcon={<LucideIcon icon="eva:arrow-ios-back-fill" />}
            onClick={() => router.back()}
            sx={{
              borderColor: 'grey.400',
@@ -198,7 +198,7 @@ These trends are not just passing fads but fundamental shifts in how we approach
 
             <Button
               variant="outlined"
-              startIcon={<Iconify icon="eva:plus-fill" />}
+              startIcon={<LucideIcon icon="eva:plus-fill" />}
               onClick={handleImageClick}
             >
               Change Cover Image
