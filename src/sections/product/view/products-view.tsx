@@ -1,99 +1,56 @@
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
-import Pagination from '@mui/material/Pagination';
+import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
+import TableContainer from '@mui/material/TableContainer';
+import TablePagination from '@mui/material/TablePagination';
 
 import { _products } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
 
-import { Breadcrumb } from 'src/components/breadcrumb';
 import { Iconify } from 'src/components/iconify';
+import { Scrollbar } from 'src/components/scrollbar';
+import { Breadcrumb } from 'src/components/breadcrumb';
 
 import { useRouter } from 'src/routes/hooks';
 
-import { ProductItem } from '../product-item';
-import { ProductSort } from '../product-sort';
-import { ProductFilters } from '../product-filters';
+import { TableNoData } from 'src/components/table-no-data';
+import { ProductTableRow } from '../product-table-row';
+import { ProductTableHead } from '../product-table-head';
+import { TableEmptyRows } from '../table-empty-rows';
+import { ProductTableToolbar } from '../product-table-toolbar';
+import { emptyRows, applyFilter, getComparator } from '../utils';
 
-import type { FiltersProps } from '../product-filters';
+import type { ProductTableRowProps } from '../product-table-row';
 
 // ----------------------------------------------------------------------
 
-const GENDER_OPTIONS = [
-  { value: 'men', label: 'Men' },
-  { value: 'women', label: 'Women' },
-  { value: 'kids', label: 'Kids' },
-];
-
-const CATEGORY_OPTIONS = [
-  { value: 'all', label: 'All' },
-  { value: 'shose', label: 'Shose' },
-  { value: 'apparel', label: 'Apparel' },
-  { value: 'accessories', label: 'Accessories' },
-];
-
-const RATING_OPTIONS = ['up4Star', 'up3Star', 'up2Star', 'up1Star'];
-
-const PRICE_OPTIONS = [
-  { value: 'below', label: 'Below $25' },
-  { value: 'between', label: 'Between $25 - $75' },
-  { value: 'above', label: 'Above $75' },
-];
-
-const COLOR_OPTIONS = [
-  '#00AB55',
-  '#000000',
-  '#FFFFFF',
-  '#FFC0CB',
-  '#FF4842',
-  '#1890FF',
-  '#94D82D',
-  '#FFC107',
-];
-
-const defaultFilters = {
-  price: '',
-  gender: [GENDER_OPTIONS[0].value],
-  colors: [COLOR_OPTIONS[4]],
-  rating: RATING_OPTIONS[0],
-  category: CATEGORY_OPTIONS[0].value,
-};
-
 export function ProductsView() {
-  const [sortBy, setSortBy] = useState('featured');
-
-  const [openFilter, setOpenFilter] = useState(false);
-
-  const [filters, setFilters] = useState<FiltersProps>(defaultFilters);
-
-  const handleOpenFilter = useCallback(() => {
-    setOpenFilter(true);
-  }, []);
-
-  const handleCloseFilter = useCallback(() => {
-    setOpenFilter(false);
-  }, []);
-
-  const handleSort = useCallback((newSort: string) => {
-    setSortBy(newSort);
-  }, []);
-
-  const handleSetFilters = useCallback((updateState: Partial<FiltersProps>) => {
-    setFilters((prevValue) => ({ ...prevValue, ...updateState }));
-  }, []);
-
-  const canReset = Object.keys(filters).some(
-    (key) => filters[key as keyof FiltersProps] !== defaultFilters[key as keyof FiltersProps]
-  );
-
   const router = useRouter();
+  const table = useTable();
 
-  const handleNewProductClick = useCallback(() => {
+  const [filterName, setFilterName] = useState('');
+
+  const dataFiltered: ProductTableRowProps[] = applyFilter({
+    inputData: _products,
+    comparator: getComparator(table.order, table.orderBy),
+    filterName,
+  });
+
+  const notFound = !dataFiltered.length && !!filterName;
+
+  const handleNewProduct = useCallback(() => {
     router.push('/dashboard/products/new');
   }, [router]);
+
+  const handleClearFilters = useCallback(() => {
+    setFilterName('');
+    table.onResetPage();
+  }, [table]);
 
   return (
     <DashboardContent>
@@ -117,68 +74,152 @@ export function ProductsView() {
           variant="contained"
           color="inherit"
           startIcon={<Iconify icon="mingcute:add-line" />}
-          onClick={handleNewProductClick}
+          onClick={handleNewProduct}
         >
           New product
         </Button>
       </Box>
 
-      <Box
-        sx={{
-          mb: 5,
-          display: 'flex',
-          alignItems: 'center',
-          flexWrap: 'wrap-reverse',
-          justifyContent: 'flex-end',
-        }}
-      >
-        <Box
-          sx={{
-            my: 1,
-            gap: 1,
-            flexShrink: 0,
-            display: 'flex',
+      <Card>
+        <ProductTableToolbar
+          numSelected={table.selected.length}
+          filterName={filterName}
+          onFilterName={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setFilterName(event.target.value);
+            table.onResetPage();
           }}
-        >
-          <ProductFilters
-            canReset={canReset}
-            filters={filters}
-            onSetFilters={handleSetFilters}
-            openFilter={openFilter}
-            onOpenFilter={handleOpenFilter}
-            onCloseFilter={handleCloseFilter}
-            onResetFilter={() => setFilters(defaultFilters)}
-            options={{
-              genders: GENDER_OPTIONS,
-              categories: CATEGORY_OPTIONS,
-              ratings: RATING_OPTIONS,
-              price: PRICE_OPTIONS,
-              colors: COLOR_OPTIONS,
-            }}
-          />
+          onClearFilters={handleClearFilters}
+        />
 
-          <ProductSort
-            sortBy={sortBy}
-            onSort={handleSort}
-            options={[
-              { value: 'featured', label: 'Featured' },
-              { value: 'newest', label: 'Newest' },
-              { value: 'priceDesc', label: 'Price: High-Low' },
-              { value: 'priceAsc', label: 'Price: Low-High' },
-            ]}
-          />
-        </Box>
-      </Box>
+        <Scrollbar>
+          <TableContainer sx={{ overflow: 'unset' }}>
+            <Table sx={{ minWidth: 800 }}>
+              <ProductTableHead
+                order={table.order}
+                orderBy={table.orderBy}
+                rowCount={_products.length}
+                numSelected={table.selected.length}
+                onSort={table.onSort}
+                onSelectAllRows={(checked) =>
+                  table.onSelectAllRows(
+                    checked,
+                    _products.map((product) => product.id)
+                  )
+                }
+                headLabel={[
+                  { id: 'name', label: 'Product' },
+                  { id: 'colors', label: 'Colors' },
+                  { id: 'price', label: 'Price' },
+                  { id: 'status', label: 'Status' },
+                  { id: '' },
+                ]}
+              />
+              <TableBody>
+                {dataFiltered
+                  .slice(
+                    table.page * table.rowsPerPage,
+                    table.page * table.rowsPerPage + table.rowsPerPage
+                  )
+                  .map((row) => (
+                    <ProductTableRow
+                      key={row.id}
+                      row={row}
+                      selected={table.selected.includes(row.id)}
+                      onSelectRow={() => table.onSelectRow(row.id)}
+                    />
+                  ))}
 
-      <Grid container spacing={3}>
-        {_products.map((product) => (
-          <Grid key={product.id} size={{ xs: 12, sm: 6, md: 3 }}>
-            <ProductItem product={product} />
-          </Grid>
-        ))}
-      </Grid>
+                <TableEmptyRows
+                  height={68}
+                  emptyRows={emptyRows(table.page, table.rowsPerPage, _products.length)}
+                />
 
-      <Pagination count={10} color="primary" sx={{ mt: 8, mx: 'auto' }} />
+                {notFound && <TableNoData searchQuery={filterName} onClearFilters={handleClearFilters} />}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Scrollbar>
+
+        <TablePagination
+          component="div"
+          page={table.page}
+          count={_products.length}
+          rowsPerPage={table.rowsPerPage}
+          onPageChange={table.onChangePage}
+          rowsPerPageOptions={[5, 10, 25]}
+          onRowsPerPageChange={table.onChangeRowsPerPage}
+        />
+      </Card>
     </DashboardContent>
   );
 }
+
+// ----------------------------------------------------------------------
+
+export function useTable() {
+  const [page, setPage] = useState(0);
+  const [orderBy, setOrderBy] = useState('name');
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [selected, setSelected] = useState<string[]>([]);
+  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+
+  const onSort = useCallback(
+    (id: string) => {
+      const isAsc = orderBy === id && order === 'asc';
+      setOrder(isAsc ? 'desc' : 'asc');
+      setOrderBy(id);
+    },
+    [order, orderBy]
+  );
+
+  const onSelectAllRows = useCallback((checked: boolean, newSelecteds: string[]) => {
+    if (checked) {
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  }, []);
+
+  const onSelectRow = useCallback(
+    (inputValue: string) => {
+      const newSelected = selected.includes(inputValue)
+        ? selected.filter((value) => value !== inputValue)
+        : [...selected, inputValue];
+
+      setSelected(newSelected);
+    },
+    [selected]
+  );
+
+  const onResetPage = useCallback(() => {
+    setPage(0);
+  }, []);
+
+  const onChangePage = useCallback((event: unknown, newPage: number) => {
+    setPage(newPage);
+  }, []);
+
+  const onChangeRowsPerPage = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      onResetPage();
+    },
+    [onResetPage]
+  );
+
+  return {
+    page,
+    order,
+    onSort,
+    orderBy,
+    selected,
+    rowsPerPage,
+    onSelectRow,
+    onResetPage,
+    onChangePage,
+    onSelectAllRows,
+    onChangeRowsPerPage,
+  };
+}
+
+

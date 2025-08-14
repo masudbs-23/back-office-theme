@@ -18,7 +18,7 @@ import { Breadcrumb } from 'src/components/breadcrumb';
 
 import { useRouter } from 'src/routes/hooks';
 
-import { TableNoData } from '../table-no-data';
+import { TableNoData } from 'src/components/table-no-data';
 import { UserTableRow } from '../user-table-row';
 import { UserTableHead } from '../user-table-head';
 import { TableEmptyRows } from '../table-empty-rows';
@@ -135,7 +135,7 @@ export function UserView() {
                   emptyRows={emptyRows(table.page, table.rowsPerPage, _users.length)}
                 />
 
-                {notFound && <TableNoData searchQuery={filterName} />}
+                {notFound && <TableNoData searchQuery={filterName} onClearFilters={handleClearFilters} />}
               </TableBody>
             </Table>
           </TableContainer>

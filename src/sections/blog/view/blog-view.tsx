@@ -1,59 +1,69 @@
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
+import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
-import Pagination from '@mui/material/Pagination';
+import TableContainer from '@mui/material/TableContainer';
+import TablePagination from '@mui/material/TablePagination';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 
 import { Iconify } from 'src/components/iconify';
+import { Scrollbar } from 'src/components/scrollbar';
 import { Breadcrumb } from 'src/components/breadcrumb';
 
 import { useRouter } from 'src/routes/hooks';
 
-import { PostItem } from '../post-item';
-import { PostSort } from '../post-sort';
-import { PostSearch } from '../post-search';
+import { TableNoData } from 'src/components/table-no-data';
+import { BlogTableRow } from '../blog-table-row';
+import { BlogTableHead } from '../blog-table-head';
+import { TableEmptyRows } from '../table-empty-rows';
+import { BlogTableToolbar } from '../blog-table-toolbar';
+import { emptyRows, applyFilter, getComparator } from '../utils';
 
-import type { IPostItem } from '../post-item';
+import type { BlogTableRowProps } from '../blog-table-row';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  posts: IPostItem[];
+  posts: BlogTableRowProps[];
 };
 
 export function BlogView({ posts }: Props) {
   const router = useRouter();
-  const [sortBy, setSortBy] = useState('latest');
+  const table = useTable();
 
-  const handleSort = useCallback((newSort: string) => {
-    setSortBy(newSort);
-  }, []);
+  const [filterName, setFilterName] = useState('');
+
+  const dataFiltered: BlogTableRowProps[] = applyFilter({
+    inputData: posts,
+    comparator: getComparator(table.order, table.orderBy),
+    filterName,
+  });
+
+  const notFound = !dataFiltered.length && !!filterName;
 
   const handleNewPost = useCallback(() => {
     router.push('/dashboard/blog/new');
   }, [router]);
 
+  const handleClearFilters = useCallback(() => {
+    setFilterName('');
+    table.onResetPage();
+  }, [table]);
+
   return (
     <DashboardContent>
-      <Box
-        sx={{
-          mb: 5,
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        <Breadcrumb 
-          title="Blog" 
-          items={[
-            { title: 'Dashboard', href: '/dashboard' },
-            { title: 'Blog' }
-          ]} 
-        />
-      </Box>
+      <Breadcrumb 
+        title="Blog" 
+        items={[
+          { title: 'Dashboard', href: '/dashboard' },
+          { title: 'Blog' }
+        ]} 
+      />
 
       <Box
         sx={{
@@ -73,47 +83,145 @@ export function BlogView({ posts }: Props) {
         </Button>
       </Box>
 
-      <Box
-        sx={{
-          mb: 5,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <PostSearch posts={posts} />
-        <PostSort
-          sortBy={sortBy}
-          onSort={handleSort}
-          options={[
-            { value: 'latest', label: 'Latest' },
-            { value: 'popular', label: 'Popular' },
-            { value: 'oldest', label: 'Oldest' },
-          ]}
+      <Card>
+        <BlogTableToolbar
+          numSelected={table.selected.length}
+          filterName={filterName}
+          onFilterName={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setFilterName(event.target.value);
+            table.onResetPage();
+          }}
+          onClearFilters={handleClearFilters}
         />
-      </Box>
 
-      <Grid container spacing={3}>
-        {posts.map((post, index) => {
-          const latestPostLarge = index === 0;
-          const latestPost = index === 1 || index === 2;
+        <Scrollbar>
+          <TableContainer sx={{ overflow: 'unset' }}>
+            <Table sx={{ minWidth: 800 }}>
+              <BlogTableHead
+                order={table.order}
+                orderBy={table.orderBy}
+                rowCount={posts.length}
+                numSelected={table.selected.length}
+                onSort={table.onSort}
+                onSelectAllRows={(checked) =>
+                  table.onSelectAllRows(
+                    checked,
+                    posts.map((post) => post.id)
+                  )
+                }
+                headLabel={[
+                  { id: 'title', label: 'Post' },
+                  { id: 'author', label: 'Author' },
+                  { id: 'postedAt', label: 'Date' },
+                  { id: 'totalViews', label: 'Views', align: 'center' },
+                  { id: 'totalComments', label: 'Comments', align: 'center' },
+                  { id: '' },
+                ]}
+              />
+              <TableBody>
+                {dataFiltered
+                  .slice(
+                    table.page * table.rowsPerPage,
+                    table.page * table.rowsPerPage + table.rowsPerPage
+                  )
+                  .map((row) => (
+                    <BlogTableRow
+                      key={row.id}
+                      row={row}
+                      selected={table.selected.includes(row.id)}
+                      onSelectRow={() => table.onSelectRow(row.id)}
+                    />
+                  ))}
 
-          return (
-            <Grid
-              key={post.id}
-              size={{
-                xs: 12,
-                sm: latestPostLarge ? 12 : 6,
-                md: latestPostLarge ? 6 : 3,
-              }}
-            >
-              <PostItem post={post} latestPost={latestPost} latestPostLarge={latestPostLarge} />
-            </Grid>
-          );
-        })}
-      </Grid>
+                <TableEmptyRows
+                  height={68}
+                  emptyRows={emptyRows(table.page, table.rowsPerPage, posts.length)}
+                />
 
-      <Pagination count={10} color="primary" sx={{ mt: 8, mx: 'auto' }} />
+                {notFound && <TableNoData searchQuery={filterName} onClearFilters={handleClearFilters} />}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Scrollbar>
+
+        <TablePagination
+          component="div"
+          page={table.page}
+          count={posts.length}
+          rowsPerPage={table.rowsPerPage}
+          onPageChange={table.onChangePage}
+          rowsPerPageOptions={[5, 10, 25]}
+          onRowsPerPageChange={table.onChangeRowsPerPage}
+        />
+      </Card>
     </DashboardContent>
   );
+}
+
+// ----------------------------------------------------------------------
+
+export function useTable() {
+  const [page, setPage] = useState(0);
+  const [orderBy, setOrderBy] = useState('title');
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [selected, setSelected] = useState<string[]>([]);
+  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+
+  const onSort = useCallback(
+    (id: string) => {
+      const isAsc = orderBy === id && order === 'asc';
+      setOrder(isAsc ? 'desc' : 'asc');
+      setOrderBy(id);
+    },
+    [order, orderBy]
+  );
+
+  const onSelectAllRows = useCallback((checked: boolean, newSelecteds: string[]) => {
+    if (checked) {
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  }, []);
+
+  const onSelectRow = useCallback(
+    (inputValue: string) => {
+      const newSelected = selected.includes(inputValue)
+        ? selected.filter((value) => value !== inputValue)
+        : [...selected, inputValue];
+
+      setSelected(newSelected);
+    },
+    [selected]
+  );
+
+  const onResetPage = useCallback(() => {
+    setPage(0);
+  }, []);
+
+  const onChangePage = useCallback((event: unknown, newPage: number) => {
+    setPage(newPage);
+  }, []);
+
+  const onChangeRowsPerPage = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      onResetPage();
+    },
+    [onResetPage]
+  );
+
+  return {
+    page,
+    order,
+    onSort,
+    orderBy,
+    selected,
+    rowsPerPage,
+    onSelectRow,
+    onResetPage,
+    onChangePage,
+    onSelectAllRows,
+    onChangeRowsPerPage,
+  };
 }

@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { usePathname } from 'src/routes/hooks';
 
 import { ThemeProvider } from 'src/theme/theme-provider';
+import { ScrollProgress } from 'src/components/scroll-progress';
 
 // ----------------------------------------------------------------------
 
@@ -17,6 +18,7 @@ export default function App({ children }: AppProps) {
 
   return (
     <ThemeProvider>
+      <ScrollProgress />
       {children}
     </ThemeProvider>
   );

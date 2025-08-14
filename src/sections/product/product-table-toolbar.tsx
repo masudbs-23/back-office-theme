@@ -10,23 +10,23 @@ import { Iconify } from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-type UserTableToolbarProps = {
+type ProductTableToolbarProps = {
   numSelected: number;
   filterName: string;
   onFilterName: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onClearFilters: () => void;
 };
 
-export function UserTableToolbar({ numSelected, filterName, onFilterName, onClearFilters }: UserTableToolbarProps) {
+export function ProductTableToolbar({ numSelected, filterName, onFilterName, onClearFilters }: ProductTableToolbarProps) {
   return (
-    <Toolbar
-      sx={{
-        height: 96,
-        display: 'flex',
-        justifyContent: 'space-between',
-        p: (theme) => theme.spacing(0, 1, 0, 3),
-      }}
-    >
+         <Toolbar
+       sx={{
+         height: 96,
+         display: 'flex',
+         justifyContent: 'space-between',
+         p: (theme) => theme.spacing(0, 1, 0, 3),
+       }}
+     >
       {numSelected > 0 ? (
         <Typography component="div" variant="subtitle1">
           {numSelected} selected
@@ -37,7 +37,7 @@ export function UserTableToolbar({ numSelected, filterName, onFilterName, onClea
             fullWidth
             value={filterName}
             onChange={onFilterName}
-            placeholder="Search user..."
+            placeholder="Search product..."
             startAdornment={
               <InputAdornment position="start">
                 <Iconify width={20} icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
