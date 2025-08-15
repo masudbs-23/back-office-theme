@@ -31,6 +31,7 @@ export const SignUpPage = lazy(() => import('src/pages/sign-up'));
 export const VerifyOtpPage = lazy(() => import('src/pages/verify-otp'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const FoodsPage = lazy(() => import('src/pages/foods'));
+export const NewFoodPage = lazy(() => import('src/pages/new-food'));
 export const ProfilePage = lazy(() => import('src/pages/profile'));
 export const ChangePasswordPage = lazy(() => import('src/pages/change-password'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
@@ -106,6 +107,7 @@ export const routesSection: RouteObject[] = [
       { path: 'products/new', element: <NewProductPage /> },
       { path: 'products/:id', element: <ProductDetailPage /> },
       { path: 'foods', element: <FoodsPage /> },
+      { path: 'foods/new', element: <NewFoodPage /> },
       { path: 'orders', element: <OrdersPage /> },
       { path: 'orders/:id', element: <OrderDetailPage /> },
       { path: 'blog', element: <BlogPage /> },
