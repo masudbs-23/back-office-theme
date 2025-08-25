@@ -36,6 +36,15 @@ export const ProfilePage = lazy(() => import('src/pages/profile'));
 export const ChangePasswordPage = lazy(() => import('src/pages/change-password'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
+// ERP Modules
+export const InventoryPage = lazy(() => import('src/pages/inventory'));
+export const NewInventoryPage = lazy(() => import('src/pages/new-inventory'));
+export const SuppliersPage = lazy(() => import('src/pages/suppliers'));
+export const NewSupplierPage = lazy(() => import('src/pages/new-supplier'));
+export const CustomersPage = lazy(() => import('src/pages/customers'));
+export const NewCustomerPage = lazy(() => import('src/pages/new-customer'));
+export const EmployeesPage = lazy(() => import('src/pages/employees'));
+
 const renderFallback = () => (
   <Box
     sx={{
@@ -113,6 +122,14 @@ export const routesSection: RouteObject[] = [
       { path: 'blog', element: <BlogPage /> },
       { path: 'blog/new', element: <NewBlogPage /> },
       { path: 'blog/:id', element: <BlogDetailPage /> },
+      // ERP Routes
+      { path: 'inventory', element: <InventoryPage /> },
+      { path: 'inventory/new', element: <NewInventoryPage /> },
+      { path: 'suppliers', element: <SuppliersPage /> },
+      { path: 'suppliers/new', element: <NewSupplierPage /> },
+      { path: 'customers', element: <CustomersPage /> },
+      { path: 'customers/new', element: <NewCustomerPage /> },
+      { path: 'employees', element: <EmployeesPage /> },
     ],
   },
   {

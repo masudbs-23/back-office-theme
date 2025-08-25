@@ -129,6 +129,21 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
               key={option.label}
               selected={option.href === pathname}
               onClick={() => handleClickItem(option.href)}
+              sx={{
+                px: 1,
+                gap: 2,
+                borderRadius: 0.75,
+                color: option.label === 'Profile' || option.label === 'Change Password' ? 'success.main' : 'text.secondary',
+                '&:hover': { 
+                  color: option.label === 'Profile' || option.label === 'Change Password' ? 'success.dark' : 'text.primary',
+                  backgroundColor: option.label === 'Profile' || option.label === 'Change Password' ? 'success.lighter' : 'action.hover',
+                },
+                [`&.${menuItemClasses.selected}`]: {
+                  color: option.label === 'Profile' || option.label === 'Change Password' ? 'success.dark' : 'text.primary',
+                  bgcolor: option.label === 'Profile' || option.label === 'Change Password' ? 'success.lighter' : 'action.selected',
+                  fontWeight: 'fontWeightSemiBold',
+                },
+              }}
             >
               {option.icon}
               {option.label}

@@ -252,3 +252,194 @@ export const _orders = [...Array(24)].map((_, index) => {
     trackingNumber: index % 2 === 0 ? `TRK${String(Math.floor(Math.random() * 900000) + 100000)}` : null,
   };
 });
+
+// ----------------------------------------------------------------------
+
+// Enhanced ERP Mock Data
+
+export const _inventory = [...Array(30)].map((_, index) => ({
+  id: _id(index),
+  sku: `SKU-${String(index + 1).padStart(4, '0')}`,
+  name: _productNames(index % 24),
+  category: ['Electronics', 'Clothing', 'Home & Garden', 'Sports', 'Books', 'Automotive'][index % 6],
+  quantity: Math.floor(Math.random() * 1000) + 50,
+  minQuantity: Math.floor(Math.random() * 50) + 10,
+  maxQuantity: Math.floor(Math.random() * 2000) + 500,
+  unitPrice: _price(index),
+  totalValue: _price(index) * (Math.floor(Math.random() * 1000) + 50),
+  location: ['Warehouse A', 'Warehouse B', 'Warehouse C', 'Store 1', 'Store 2'][index % 5],
+  supplier: _company(index),
+  lastUpdated: _times(index),
+  status: ['In Stock', 'Low Stock', 'Out of Stock', 'Discontinued'][index % 4],
+  image: `/assets/images/product/product-${(index % 24) + 1}.webp`,
+}));
+
+export const _suppliers = [...Array(20)].map((_, index) => ({
+  id: _id(index),
+  name: _company(index),
+  email: `${_fullName(index).toLowerCase().replace(/\s+/g, '.')}@${_company(index).toLowerCase().replace(/[^a-z]/g, '')}.com`,
+  phone: `+1 (555) ${String(Math.floor(Math.random() * 900) + 100)}-${String(Math.floor(Math.random() * 9000) + 1000)}`,
+  address: `${Math.floor(Math.random() * 9999) + 1} ${['Main St', 'Oak Ave', 'Pine Rd', 'Elm Blvd', 'Cedar Ln'][index % 5]}, ${['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'][index % 5]}, ${['NY', 'CA', 'IL', 'TX', 'AZ'][index % 5]} ${String(Math.floor(Math.random() * 90000) + 10000)}`,
+  category: ['Electronics', 'Clothing', 'Home & Garden', 'Sports', 'Books', 'Automotive'][index % 6],
+  status: ['Active', 'Inactive', 'Pending'][index % 3],
+  totalOrders: Math.floor(Math.random() * 1000) + 50,
+  totalSpent: _price(index) * (Math.floor(Math.random() * 10000) + 1000),
+  lastOrderDate: _times(index),
+  paymentTerms: ['Net 30', 'Net 60', 'Net 90', 'Cash on Delivery'][index % 4],
+}));
+
+export const _customers = [...Array(25)].map((_, index) => ({
+  id: _id(index % 24),
+  name: _fullName(index % 24),
+  email: `${_fullName(index % 24).toLowerCase().replace(/\s+/g, '.')}@example.com`,
+  phone: `+1 (555) ${String(Math.floor(Math.random() * 900) + 100)}-${String(Math.floor(Math.random() * 9000) + 1000)}`,
+  address: `${Math.floor(Math.random() * 9999) + 1} ${['Main St', 'Oak Ave', 'Pine Rd', 'Elm Blvd', 'Cedar Ln'][index % 5]}, ${['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'][index % 5]}, ${['NY', 'CA', 'IL', 'TX', 'AZ'][index % 5]} ${String(Math.floor(Math.random() * 90000) + 10000)}`,
+  company: index % 3 === 0 ? _company(index % 24) : null,
+  customerType: ['Individual', 'Business', 'VIP'][index % 3],
+  status: ['Active', 'Inactive', 'Pending'][index % 3],
+  totalOrders: Math.floor(Math.random() * 100) + 1,
+  totalSpent: _price(index % 24) * (Math.floor(Math.random() * 1000) + 100),
+  lastOrderDate: _times(index % 24),
+  registrationDate: _times((index + 5) % 24),
+  avatarUrl: `/assets/images/avatar/avatar-${(index % 24) + 1}.webp`,
+}));
+
+export const _employees = [...Array(15)].map((_, index) => ({
+  id: _id(index % 24),
+  employeeId: `EMP-${String(index + 1).padStart(4, '0')}`,
+  name: _fullName(index % 24),
+  email: `${_fullName(index % 24).toLowerCase().replace(/\s+/g, '.')}@company.com`,
+  phone: `+1 (555) ${String(Math.floor(Math.random() * 900) + 100)}-${String(Math.floor(Math.random() * 9000) + 1000)}`,
+  department: ['Sales', 'Marketing', 'IT', 'HR', 'Finance', 'Operations', 'Customer Service'][index % 7],
+  position: ['Manager', 'Senior', 'Junior', 'Lead', 'Associate'][index % 5],
+  hireDate: _times(index % 24),
+  salary: _price(index % 24) * 1000,
+  status: ['Active', 'Inactive', 'On Leave'][index % 3],
+  manager: index > 0 ? _fullName((index - 1) % 24) : null,
+  avatarUrl: `/assets/images/avatar/avatar-${(index % 24) + 1}.webp`,
+}));
+
+export const _departments = [
+  { id: _id(0), name: 'Sales', manager: _fullName(0), employeeCount: 12, budget: 500000 },
+  { id: _id(1), name: 'Marketing', manager: _fullName(1), employeeCount: 8, budget: 300000 },
+  { id: _id(2), name: 'IT', manager: _fullName(2), employeeCount: 15, budget: 800000 },
+  { id: _id(3), name: 'HR', manager: _fullName(3), employeeCount: 6, budget: 200000 },
+  { id: _id(4), name: 'Finance', manager: _fullName(4), employeeCount: 10, budget: 400000 },
+  { id: _id(5), name: 'Operations', manager: _fullName(5), employeeCount: 20, budget: 600000 },
+  { id: _id(6), name: 'Customer Service', manager: _fullName(6), employeeCount: 14, budget: 350000 },
+];
+
+export const _projects = [...Array(12)].map((_, index) => ({
+  id: _id(index % 24),
+  name: `Project ${index + 1}`,
+  description: _description(index % 24),
+  manager: _fullName(index % 24),
+  team: _users.slice(0, Math.floor(Math.random() * 5) + 3).map(user => user.name),
+  startDate: _times(index % 24),
+  endDate: new Date(Date.now() + (index % 12 + 1) * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+  status: ['Planning', 'In Progress', 'On Hold', 'Completed', 'Cancelled'][index % 5],
+  priority: ['Low', 'Medium', 'High', 'Critical'][index % 4],
+  budget: _price(index % 24) * 10000,
+  spent: _price(index % 24) * (Math.floor(Math.random() * 8000) + 2000),
+  progress: Math.floor(Math.random() * 100),
+}));
+
+export const _invoices = [...Array(20)].map((_, index) => ({
+  id: _id(index % 24),
+  invoiceNumber: `INV-${String(index + 1).padStart(4, '0')}`,
+  customerName: _fullName(index % 24),
+  customerEmail: `${_fullName(index % 24).toLowerCase().replace(/\s+/g, '.')}@example.com`,
+  issueDate: _times(index % 24),
+  dueDate: new Date(Date.now() + (index % 30 + 15) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+  status: ['Draft', 'Sent', 'Paid', 'Overdue', 'Cancelled'][index % 5],
+  subtotal: _price(index % 24) * (Math.floor(Math.random() * 10) + 1),
+  tax: _price(index % 24) * 0.08,
+  total: _price(index % 24) * (Math.floor(Math.random() * 10) + 1) * 1.08,
+  items: [
+    {
+      id: _id((index * 2) % 24),
+      name: _productNames(index % 24),
+      quantity: Math.floor(Math.random() * 5) + 1,
+      price: _price(index % 24),
+      total: _price(index % 24) * (Math.floor(Math.random() * 5) + 1),
+    }
+  ],
+}));
+
+export const _expenses = [...Array(18)].map((_, index) => ({
+  id: _id(index % 24),
+  description: _description(index % 24),
+  category: ['Office Supplies', 'Travel', 'Marketing', 'Equipment', 'Software', 'Utilities', 'Rent', 'Insurance'][index % 8],
+  amount: _price(index % 24) * (Math.floor(Math.random() * 100) + 10),
+  date: _times(index % 24),
+  employee: _fullName(index % 24),
+  department: ['Sales', 'Marketing', 'IT', 'HR', 'Finance', 'Operations'][index % 6],
+  status: ['Pending', 'Approved', 'Rejected', 'Paid'][index % 4],
+  receipt: index % 3 === 0 ? `/assets/images/receipts/receipt-${index + 1}.pdf` : null,
+}));
+
+export const _purchases = [...Array(15)].map((_, index) => ({
+  id: _id(index % 24),
+  purchaseNumber: `PO-${String(index + 1).padStart(4, '0')}`,
+  supplier: _company(index % 24),
+  supplierContact: _fullName(index % 24),
+  orderDate: _times(index % 24),
+  expectedDelivery: new Date(Date.now() + (index % 14 + 7) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+  status: ['Draft', 'Sent', 'Confirmed', 'Shipped', 'Received', 'Cancelled'][index % 6],
+  items: [
+    {
+      id: _id((index * 2) % 24),
+      name: _productNames(index % 24),
+      quantity: Math.floor(Math.random() * 100) + 10,
+      unitPrice: _price(index % 24),
+      total: _price(index % 24) * (Math.floor(Math.random() * 100) + 10),
+    }
+  ],
+  subtotal: _price(index % 24) * (Math.floor(Math.random() * 1000) + 100),
+  tax: _price(index % 24) * 0.08,
+  shipping: 25.00,
+  total: _price(index % 24) * (Math.floor(Math.random() * 1000) + 100) * 1.08 + 25.00,
+}));
+
+export const _reports = [
+  {
+    id: _id(0),
+    name: 'Sales Report',
+    type: 'sales',
+    period: 'Monthly',
+    lastGenerated: _times(0),
+    status: 'Generated',
+  },
+  {
+    id: _id(1),
+    name: 'Inventory Report',
+    type: 'inventory',
+    period: 'Weekly',
+    lastGenerated: _times(1),
+    status: 'Generated',
+  },
+  {
+    id: _id(2),
+    name: 'Financial Report',
+    type: 'financial',
+    period: 'Quarterly',
+    lastGenerated: _times(2),
+    status: 'Pending',
+  },
+  {
+    id: _id(3),
+    name: 'Employee Report',
+    type: 'employee',
+    period: 'Monthly',
+    lastGenerated: _times(3),
+    status: 'Generated',
+  },
+  {
+    id: _id(4),
+    name: 'Customer Report',
+    type: 'customer',
+    period: 'Monthly',
+    lastGenerated: _times(4),
+    status: 'Generated',
+  },
+];
