@@ -96,7 +96,7 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
             {user?.name || user?.email || _myAccount?.displayName}
           </Typography>
 
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             {user?.email || _myAccount?.email}
           </Typography>
         </Box>
@@ -133,16 +133,29 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
                 px: 1,
                 gap: 2,
                 borderRadius: 0.75,
-                color: option.label === 'Profile' || option.label === 'Change Password' ? 'success.main' : 'text.secondary',
-                '&:hover': { 
-                  color: option.label === 'Profile' || option.label === 'Change Password' ? 'success.dark' : 'text.primary',
-                  backgroundColor: option.label === 'Profile' || option.label === 'Change Password' ? 'success.lighter' : 'action.hover',
-                },
-                [`&.${menuItemClasses.selected}`]: {
-                  color: option.label === 'Profile' || option.label === 'Change Password' ? 'success.dark' : 'text.primary',
-                  bgcolor: option.label === 'Profile' || option.label === 'Change Password' ? 'success.lighter' : 'action.selected',
-                  fontWeight: 'fontWeightSemiBold',
-                },
+                ...(option.label === 'Profile' || option.label === 'Change Password' ? {
+                  color: 'success.main !important',
+                  '&:hover': { 
+                    color: 'success.dark !important',
+                    backgroundColor: 'action.hover',
+                  },
+                  [`&.${menuItemClasses.selected}`]: {
+                    color: 'success.dark !important',
+                    bgcolor: 'action.selected',
+                    fontWeight: 'fontWeightSemiBold',
+                  },
+                } : {
+                  color: 'text.secondary',
+                  '&:hover': { 
+                    color: 'text.primary',
+                    backgroundColor: 'action.hover',
+                  },
+                  [`&.${menuItemClasses.selected}`]: {
+                    color: 'text.primary',
+                    bgcolor: 'action.selected',
+                    fontWeight: 'fontWeightSemiBold',
+                  },
+                }),
               }}
             >
               {option.icon}
