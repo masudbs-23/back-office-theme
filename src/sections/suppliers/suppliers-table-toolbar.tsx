@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 
+import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,6 +10,23 @@ import TextField from '@mui/material/TextField';
 import { LucideIcon } from 'src/components/lucide-icons';
 
 // ----------------------------------------------------------------------
+
+// Supplier categories data for autocomplete
+const supplierCategories = [
+  { id: '1', name: 'Electronics' },
+  { id: '2', name: 'Clothing' },
+  { id: '3', name: 'Home & Garden' },
+  { id: '4', name: 'Sports' },
+  { id: '5', name: 'Books' },
+  { id: '6', name: 'Automotive' },
+];
+
+// Supplier status data for autocomplete
+const supplierStatuses = [
+  { id: '1', name: 'Active' },
+  { id: '2', name: 'Inactive' },
+  { id: '3', name: 'Pending' },
+];
 
 type Props = {
   numSelected: number;
@@ -34,6 +52,36 @@ export function SuppliersTableToolbar({
   const handleClearFilters = useCallback(() => {
     onClearFilters();
   }, [onClearFilters]);
+
+  const handleCategoryChange = useCallback((event: any, newValue: any) => {
+    // Create a synthetic event to match the expected interface
+    const syntheticEvent = {
+      target: {
+        value: newValue ? newValue.name : 'all'
+      }
+    } as React.ChangeEvent<HTMLInputElement>;
+    onFilterCategory(syntheticEvent);
+  }, [onFilterCategory]);
+
+  const handleStatusChange = useCallback((event: any, newValue: any) => {
+    // Create a synthetic event to match the expected interface
+    const syntheticEvent = {
+      target: {
+        value: newValue ? newValue.name : 'all'
+      }
+    } as React.ChangeEvent<HTMLInputElement>;
+    onFilterStatus(syntheticEvent);
+  }, [onFilterStatus]);
+
+  // Get the selected category object
+  const selectedCategory = filterCategory !== 'all' 
+    ? supplierCategories.find(category => category.name === filterCategory) 
+    : null;
+
+  // Get the selected status object
+  const selectedStatus = filterStatus !== 'all' 
+    ? supplierStatuses.find(status => status.name === filterStatus) 
+    : null;
 
   // Check if any filters are active
   const hasActiveFilters = filterName || filterCategory !== 'all' || filterStatus !== 'all';
@@ -66,34 +114,127 @@ export function SuppliersTableToolbar({
           sx={{ maxWidth: 320 }}
         />
 
-        <TextField
-          select
-          label="Category"
-          value={filterCategory}
-          onChange={onFilterCategory}
-          sx={{ minWidth: 200 }}
-        >
-          <MenuItem value="all">All Categories</MenuItem>
-          <MenuItem value="Electronics">Electronics</MenuItem>
-          <MenuItem value="Clothing">Clothing</MenuItem>
-          <MenuItem value="Home & Garden">Home & Garden</MenuItem>
-          <MenuItem value="Sports">Sports</MenuItem>
-          <MenuItem value="Books">Books</MenuItem>
-          <MenuItem value="Automotive">Automotive</MenuItem>
-        </TextField>
+        <Autocomplete
+          options={supplierCategories}
+          getOptionLabel={(option) => option.name}
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Category"
+              placeholder="Search categories..."
+            />
+          )}
+          sx={{
+            minWidth: 200,
+            '& .MuiAutocomplete-popper': {
+              '& .MuiPaper-root': {
+                backgroundImage: 'url(/assets/background/overlay.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                '& .MuiAutocomplete-listbox': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  backdropFilter: 'blur(10px)',
+                  '& .MuiAutocomplete-option': {
+                    '&:hover': {
+                      backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                    },
+                    '&.Mui-focused': {
+                      backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                    },
+                  },
+                },
+              },
+            },
+          }}
+          slotProps={{
+            popper: {
+              sx: {
+                '& .MuiPaper-root': {
+                  backgroundImage: 'url(/assets/background/overlay.jpg)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                  '& .MuiAutocomplete-listbox': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    backdropFilter: 'blur(10px)',
+                    '& .MuiAutocomplete-option': {
+                      '&:hover': {
+                        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                      },
+                      '&.Mui-focused': {
+                        backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          }}
+        />
 
-        <TextField
-          select
-          label="Status"
-          value={filterStatus}
-          onChange={onFilterStatus}
-          sx={{ minWidth: 200 }}
-        >
-          <MenuItem value="all">All Status</MenuItem>
-          <MenuItem value="Active">Active</MenuItem>
-          <MenuItem value="Inactive">Inactive</MenuItem>
-          <MenuItem value="Pending">Pending</MenuItem>
-        </TextField>
+        <Autocomplete
+          options={supplierStatuses}
+          getOptionLabel={(option) => option.name}
+          value={selectedStatus}
+          onChange={handleStatusChange}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Status"
+              placeholder="Search status..."
+            />
+          )}
+          sx={{
+            minWidth: 200,
+            '& .MuiAutocomplete-popper': {
+              '& .MuiPaper-root': {
+                backgroundImage: 'url(/assets/background/overlay.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                '& .MuiAutocomplete-listbox': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  backdropFilter: 'blur(10px)',
+                  '& .MuiAutocomplete-option': {
+                    '&:hover': {
+                      backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                    },
+                    '&.Mui-focused': {
+                      backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                    },
+                  },
+                },
+              },
+            },
+          }}
+          slotProps={{
+            popper: {
+              sx: {
+                '& .MuiPaper-root': {
+                  backgroundImage: 'url(/assets/background/overlay.jpg)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                  '& .MuiAutocomplete-listbox': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    backdropFilter: 'blur(10px)',
+                    '& .MuiAutocomplete-option': {
+                      '&:hover': {
+                        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                      },
+                      '&.Mui-focused': {
+                        backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          }}
+        />
       </Stack>
 
       {!!numSelected && (

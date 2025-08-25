@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 
+import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
@@ -24,32 +25,32 @@ import { LucideIcon } from 'src/components/lucide-icons';
 // ----------------------------------------------------------------------
 
 const DEPARTMENTS = [
-  'Engineering',
-  'Sales',
-  'Marketing',
-  'Human Resources',
-  'Finance',
-  'Operations',
-  'Customer Support',
-  'IT',
+  { id: '1', name: 'Engineering' },
+  { id: '2', name: 'Sales' },
+  { id: '3', name: 'Marketing' },
+  { id: '4', name: 'Human Resources' },
+  { id: '5', name: 'Finance' },
+  { id: '6', name: 'Operations' },
+  { id: '7', name: 'Customer Support' },
+  { id: '8', name: 'IT' },
 ];
 
 const POSITIONS = [
-  'Manager',
-  'Senior Developer',
-  'Developer',
-  'Sales Representative',
-  'Marketing Specialist',
-  'HR Coordinator',
-  'Accountant',
-  'Support Specialist',
-  'System Administrator',
+  { id: '1', name: 'Manager' },
+  { id: '2', name: 'Senior Developer' },
+  { id: '3', name: 'Developer' },
+  { id: '4', name: 'Sales Representative' },
+  { id: '5', name: 'Marketing Specialist' },
+  { id: '6', name: 'HR Coordinator' },
+  { id: '7', name: 'Accountant' },
+  { id: '8', name: 'Support Specialist' },
+  { id: '9', name: 'System Administrator' },
 ];
 
 const STATUS_OPTIONS = [
-  'Active',
-  'Inactive',
-  'On Leave',
+  { id: '1', name: 'Active' },
+  { id: '2', name: 'Inactive' },
+  { id: '3', name: 'On Leave' },
 ];
 
 export function NewEmployeeView() {
@@ -84,6 +85,13 @@ export function NewEmployeeView() {
     }));
   };
 
+  const handleAutocompleteChange = (field: string) => (event: any, newValue: any) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: newValue ? newValue.name : '',
+    }));
+  };
+
   const handleDateChange = (field: string) => (date: Date | null) => {
     setFormData(prev => ({
       ...prev,
@@ -91,16 +99,21 @@ export function NewEmployeeView() {
     }));
   };
 
+  // Get selected values for autocomplete
+  const selectedDepartment = DEPARTMENTS.find(dept => dept.name === formData.department) || null;
+  const selectedPosition = POSITIONS.find(pos => pos.name === formData.position) || null;
+  const selectedStatus = STATUS_OPTIONS.find(status => status.name === formData.status) || null;
+
   const handleSubmit = useCallback(() => {
     // Handle form submission here
     console.log('Form data:', formData);
-    
+
     // Basic validation
     if (!formData.name || !formData.email || !formData.department || !formData.position) {
       showSnackbar('Please fill in all required fields', 'error');
       return;
     }
-    
+
     // Simulate API call
     try {
       // Here you would make an API call to create the employee
@@ -114,13 +127,13 @@ export function NewEmployeeView() {
 
   return (
     <DashboardContent>
-      <Breadcrumb 
-        title="New Employee" 
+      <Breadcrumb
+        title="New Employee"
         items={[
           { title: 'Dashboard', href: '/dashboard' },
           { title: 'Employees', href: '/dashboard/employees' },
           { title: 'New Employee' }
-        ]} 
+        ]}
       />
 
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 3, mb: 2 }}>
@@ -143,9 +156,9 @@ export function NewEmployeeView() {
       </Box>
 
       <Box sx={{ display: 'flex', gap: 3 }}>
-        <Card sx={{ 
-          flex: 1, 
-          p: 3, 
+        <Card sx={{
+          flex: 1,
+          p: 3,
           border: '1px solid #E0E0E0',
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
           backgroundColor: '#FFFFFF'
@@ -204,32 +217,148 @@ export function NewEmployeeView() {
 
             <Box sx={{ display: 'flex', gap: 2 }}>
               <FormControl fullWidth>
-                <InputLabel>Department</InputLabel>
-                <Select
-                  value={formData.department}
-                  label="Department"
-                  onChange={handleSelectChange('department')}
-                >
-                  {DEPARTMENTS.map((dept) => (
-                    <MenuItem key={dept} value={dept}>
-                      {dept}
-                    </MenuItem>
-                  ))}
-                </Select>
+                <Autocomplete
+                  options={DEPARTMENTS}
+                  getOptionLabel={(option) => option.name}
+                  value={selectedDepartment}
+                  onChange={handleAutocompleteChange('department')}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Department" />
+                  )}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      backgroundColor: '#FFFFFF',
+                      '&:hover': {
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#000000',
+                        },
+                      },
+                      '&.Mui-focused': {
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#000000',
+                          borderWidth: 2,
+                        },
+                      },
+                    },
+                    '& .MuiAutocomplete-popper': {
+                      '& .MuiPaper-root': {
+                        backgroundImage: 'url(/assets/background/overlay.jpg)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
+                        '& .MuiAutocomplete-listbox': {
+                          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                          backdropFilter: 'blur(10px)',
+                          '& .MuiAutocomplete-option': {
+                            '&:hover': {
+                              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                            },
+                            '&.Mui-focused': {
+                              backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                            },
+                          },
+                        },
+                      },
+                    },
+                  }}
+                  slotProps={{
+                    popper: {
+                      sx: {
+                        '& .MuiPaper-root': {
+                          backgroundImage: 'url(/assets/background/overlay.jpg)',
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          backgroundRepeat: 'no-repeat',
+                          '& .MuiAutocomplete-listbox': {
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            backdropFilter: 'blur(10px)',
+                            '& .MuiAutocomplete-option': {
+                              '&:hover': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                              },
+                              '&.Mui-focused': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  }}
+                />
               </FormControl>
               <FormControl fullWidth>
-                <InputLabel>Position</InputLabel>
-                <Select
-                  value={formData.position}
-                  label="Position"
-                  onChange={handleSelectChange('position')}
-                >
-                  {POSITIONS.map((pos) => (
-                    <MenuItem key={pos} value={pos}>
-                      {pos}
-                    </MenuItem>
-                  ))}
-                </Select>
+                <Autocomplete
+                  options={POSITIONS}
+                  getOptionLabel={(option) => option.name}
+                  value={selectedPosition}
+                  onChange={handleAutocompleteChange('position')}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Position" />
+                  )}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      backgroundColor: '#FFFFFF',
+                      '&:hover': {
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#000000',
+                        },
+                      },
+                      '&.Mui-focused': {
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#000000',
+                          borderWidth: 2,
+                        },
+                      },
+                    },
+                    '& .MuiAutocomplete-popper': {
+                      '& .MuiPaper-root': {
+                        backgroundImage: 'url(/assets/background/overlay.jpg)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
+                        '& .MuiAutocomplete-listbox': {
+                          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                          backdropFilter: 'blur(10px)',
+                          '& .MuiAutocomplete-option': {
+                            '&:hover': {
+                              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                            },
+                            '&.Mui-focused': {
+                              backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                            },
+                          },
+                        },
+                      },
+                    },
+                  }}
+                  slotProps={{
+                    popper: {
+                      sx: {
+                        '& .MuiPaper-root': {
+                          backgroundImage: 'url(/assets/background/overlay.jpg)',
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          backgroundRepeat: 'no-repeat',
+                          '& .MuiAutocomplete-listbox': {
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            backdropFilter: 'blur(10px)',
+                            '& .MuiAutocomplete-option': {
+                              '&:hover': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                              },
+                              '&.Mui-focused': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  }}
+                />
               </FormControl>
             </Box>
 
@@ -301,18 +430,76 @@ export function NewEmployeeView() {
 
             <Box sx={{ display: 'flex', gap: 2 }}>
               <FormControl fullWidth>
-                <InputLabel>Status</InputLabel>
-                <Select
-                  value={formData.status}
-                  label="Status"
-                  onChange={handleSelectChange('status')}
-                >
-                  {STATUS_OPTIONS.map((status) => (
-                    <MenuItem key={status} value={status}>
-                      {status}
-                    </MenuItem>
-                  ))}
-                </Select>
+                <Autocomplete
+                  options={STATUS_OPTIONS}
+                  getOptionLabel={(option) => option.name}
+                  value={selectedStatus}
+                  onChange={handleAutocompleteChange('status')}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Status" />
+                  )}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      backgroundColor: '#FFFFFF',
+                      '&:hover': {
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#000000',
+                        },
+                      },
+                      '&.Mui-focused': {
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#000000',
+                          borderWidth: 2,
+                        },
+                      },
+                    },
+                    '& .MuiAutocomplete-popper': {
+                      '& .MuiPaper-root': {
+                        backgroundImage: 'url(/assets/background/overlay.jpg)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
+                        '& .MuiAutocomplete-listbox': {
+                          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                          backdropFilter: 'blur(10px)',
+                          '& .MuiAutocomplete-option': {
+                            '&:hover': {
+                              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                            },
+                            '&.Mui-focused': {
+                              backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                            },
+                          },
+                        },
+                      },
+                    },
+                  }}
+                  slotProps={{
+                    popper: {
+                      sx: {
+                        '& .MuiPaper-root': {
+                          backgroundImage: 'url(/assets/background/overlay.jpg)',
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          backgroundRepeat: 'no-repeat',
+                          '& .MuiAutocomplete-listbox': {
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            backdropFilter: 'blur(10px)',
+                            '& .MuiAutocomplete-option': {
+                              '&:hover': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                              },
+                              '&.Mui-focused': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  }}
+                />
               </FormControl>
             </Box>
 

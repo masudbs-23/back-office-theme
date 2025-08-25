@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useState, useCallback } from 'react';
 
+import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
@@ -22,16 +23,16 @@ import { LucideIcon } from 'src/components/lucide-icons';
 // ----------------------------------------------------------------------
 
 const EMPLOYEE_TYPES = [
-  'Full-time',
-  'Part-time',
-  'Contract',
-  'Intern',
+  { id: '1', name: 'Full-time' },
+  { id: '2', name: 'Part-time' },
+  { id: '3', name: 'Contract' },
+  { id: '4', name: 'Intern' },
 ];
 
 const STATUS_OPTIONS = [
-  'Active',
-  'Inactive',
-  'On Leave',
+  { id: '1', name: 'Active' },
+  { id: '2', name: 'Inactive' },
+  { id: '3', name: 'On Leave' },
 ];
 
 export default function EmployeeDetailPage() {
@@ -62,6 +63,17 @@ export default function EmployeeDetailPage() {
       [field]: event.target.value,
     }));
   };
+
+  const handleAutocompleteChange = (field: string) => (event: any, newValue: any) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: newValue ? newValue.name : '',
+    }));
+  };
+
+  // Get selected values for autocomplete
+  const selectedEmployeeType = EMPLOYEE_TYPES.find(type => type.name === formData.employeeType) || null;
+  const selectedStatus = STATUS_OPTIONS.find(status => status.name === formData.status) || null;
 
   const handleSubmit = useCallback(() => {
     // Handle form submission here
@@ -177,18 +189,72 @@ export default function EmployeeDetailPage() {
 
             <Box sx={{ display: 'flex', gap: 2 }}>
               <FormControl fullWidth>
-                <InputLabel>Employee Type</InputLabel>
-                <Select
-                  value={formData.employeeType}
-                  label="Employee Type"
-                  onChange={handleSelectChange('employeeType')}
-                >
-                  {EMPLOYEE_TYPES.map((type) => (
-                    <MenuItem key={type} value={type}>
-                      {type}
-                    </MenuItem>
-                  ))}
-                </Select>
+                <Autocomplete
+                  options={EMPLOYEE_TYPES}
+                  getOptionLabel={(option) => option.name}
+                  value={selectedEmployeeType}
+                  onChange={handleAutocompleteChange('employeeType')}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Employee Type" />
+                  )}
+                  sx={{
+                    '& .MuiAutocomplete-inputRoot': {
+                      '& fieldset': {
+                        borderColor: 'grey.400',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'grey.600',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: 'grey.600',
+                      },
+                    },
+                    '& .MuiAutocomplete-popper': {
+                      '& .MuiPaper-root': {
+                        backgroundImage: 'url(/assets/background/overlay.jpg)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
+                        '& .MuiAutocomplete-listbox': {
+                          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                          backdropFilter: 'blur(10px)',
+                          '& .MuiAutocomplete-option': {
+                            '&:hover': {
+                              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                            },
+                            '&.Mui-focused': {
+                              backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                            },
+                          },
+                        },
+                      },
+                    },
+                  }}
+                  slotProps={{
+                    popper: {
+                      sx: {
+                        '& .MuiPaper-root': {
+                          backgroundImage: 'url(/assets/background/overlay.jpg)',
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          backgroundRepeat: 'no-repeat',
+                          '& .MuiAutocomplete-listbox': {
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            backdropFilter: 'blur(10px)',
+                            '& .MuiAutocomplete-option': {
+                              '&:hover': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                              },
+                              '&.Mui-focused': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  }}
+                />
               </FormControl>
               <TextField
                 fullWidth
@@ -204,18 +270,72 @@ export default function EmployeeDetailPage() {
 
             <Box sx={{ display: 'flex', gap: 2 }}>
               <FormControl fullWidth>
-                <InputLabel>Status</InputLabel>
-                <Select
-                  value={formData.status}
-                  label="Status"
-                  onChange={handleSelectChange('status')}
-                >
-                  {STATUS_OPTIONS.map((status) => (
-                    <MenuItem key={status} value={status}>
-                      {status}
-                    </MenuItem>
-                  ))}
-                </Select>
+                <Autocomplete
+                  options={STATUS_OPTIONS}
+                  getOptionLabel={(option) => option.name}
+                  value={selectedStatus}
+                  onChange={handleAutocompleteChange('status')}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Status" />
+                  )}
+                  sx={{
+                    '& .MuiAutocomplete-inputRoot': {
+                      '& fieldset': {
+                        borderColor: 'grey.400',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'grey.600',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: 'grey.600',
+                      },
+                    },
+                    '& .MuiAutocomplete-popper': {
+                      '& .MuiPaper-root': {
+                        backgroundImage: 'url(/assets/background/overlay.jpg)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
+                        '& .MuiAutocomplete-listbox': {
+                          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                          backdropFilter: 'blur(10px)',
+                          '& .MuiAutocomplete-option': {
+                            '&:hover': {
+                              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                            },
+                            '&.Mui-focused': {
+                              backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                            },
+                          },
+                        },
+                      },
+                    },
+                  }}
+                  slotProps={{
+                    popper: {
+                      sx: {
+                        '& .MuiPaper-root': {
+                          backgroundImage: 'url(/assets/background/overlay.jpg)',
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          backgroundRepeat: 'no-repeat',
+                          '& .MuiAutocomplete-listbox': {
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            backdropFilter: 'blur(10px)',
+                            '& .MuiAutocomplete-option': {
+                              '&:hover': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                              },
+                              '&.Mui-focused': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  }}
+                />
               </FormControl>
             </Box>
 
