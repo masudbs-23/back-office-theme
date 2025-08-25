@@ -1,7 +1,7 @@
 import type { ReactNode} from 'react';
 
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -15,6 +15,7 @@ interface ProtectedRouteProps {
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -22,8 +23,13 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     }
   }, [isAuthenticated, isLoading, navigate]);
 
-  // Show loading spinner while checking authentication
-  if (isLoading) {
+  // Don't show loading spinner on authentication pages
+  const isAuthPage = location.pathname === '/sign-in' || 
+                     location.pathname === '/sign-up' || 
+                     location.pathname === '/verify-otp';
+  
+  // Show loading spinner while checking authentication (but not on auth pages)
+  if (isLoading && !isAuthPage) {
     return (
       <Box
         sx={{
