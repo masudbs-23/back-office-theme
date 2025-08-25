@@ -49,7 +49,7 @@ export function SuppliersTableRow({ row, selected, onSelectRow }: Props) {
   }, [router, row.id]);
 
   const handleEditRow = useCallback(() => {
-    router.push(`/dashboard/suppliers/${row.id}/edit`);
+    router.push(`/dashboard/suppliers/${row.id}`);
   }, [router, row.id]);
 
   const handleDeleteRow = useCallback(() => {

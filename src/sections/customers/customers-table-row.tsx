@@ -51,7 +51,7 @@ export function CustomersTableRow({ row, selected, onSelectRow }: Props) {
   }, [router, row.id]);
 
   const handleEditRow = useCallback(() => {
-    router.push(`/dashboard/customers/${row.id}/edit`);
+    router.push(`/dashboard/customers/${row.id}`);
   }, [router, row.id]);
 
   const handleDeleteRow = useCallback(() => {

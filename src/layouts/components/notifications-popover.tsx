@@ -19,6 +19,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 
 import { fToNow } from 'src/utils/format-time';
 
+import { useRouter } from 'src/routes/hooks';
 import { Scrollbar } from 'src/components/scrollbar';
 import { LucideIcon } from 'src/components/lucide-icons';
 
@@ -39,6 +40,7 @@ export type NotificationsPopoverProps = IconButtonProps & {
 };
 
 export function NotificationsPopover({ data = [], sx, ...other }: NotificationsPopoverProps) {
+  const router = useRouter();
   const [notifications, setNotifications] = useState(data);
 
   const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
@@ -61,6 +63,11 @@ export function NotificationsPopover({ data = [], sx, ...other }: NotificationsP
 
     setNotifications(updatedNotifications);
   }, [notifications]);
+
+  const handleViewAll = useCallback(() => {
+    handleClosePopover();
+    router.push('/dashboard/notifications');
+  }, [router, handleClosePopover]);
 
   return (
     <>
@@ -150,7 +157,7 @@ export function NotificationsPopover({ data = [], sx, ...other }: NotificationsP
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Box sx={{ p: 1 }}>
-          <Button fullWidth disableRipple color="inherit">
+          <Button fullWidth disableRipple color="inherit" onClick={handleViewAll}>
             View all
           </Button>
         </Box>

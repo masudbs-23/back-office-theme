@@ -50,7 +50,7 @@ export function EmployeesTableRow({ row, selected, onSelectRow }: Props) {
   }, [router, row.id]);
 
   const handleEditRow = useCallback(() => {
-    router.push(`/dashboard/employees/${row.id}/edit`);
+    router.push(`/dashboard/employees/${row.id}`);
   }, [router, row.id]);
 
   const handleDeleteRow = useCallback(() => {

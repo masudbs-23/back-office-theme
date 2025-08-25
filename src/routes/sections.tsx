@@ -34,6 +34,7 @@ export const FoodsPage = lazy(() => import('src/pages/foods'));
 export const NewFoodPage = lazy(() => import('src/pages/new-food'));
 export const ProfilePage = lazy(() => import('src/pages/profile'));
 export const ChangePasswordPage = lazy(() => import('src/pages/change-password'));
+export const NotificationsPage = lazy(() => import('src/pages/notifications'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 // ERP Modules
@@ -41,9 +42,13 @@ export const InventoryPage = lazy(() => import('src/pages/inventory'));
 export const NewInventoryPage = lazy(() => import('src/pages/new-inventory'));
 export const SuppliersPage = lazy(() => import('src/pages/suppliers'));
 export const NewSupplierPage = lazy(() => import('src/pages/new-supplier'));
+export const SupplierDetailPage = lazy(() => import('src/pages/supplier-detail'));
 export const CustomersPage = lazy(() => import('src/pages/customers'));
 export const NewCustomerPage = lazy(() => import('src/pages/new-customer'));
+export const CustomerDetailPage = lazy(() => import('src/pages/customer-detail'));
 export const EmployeesPage = lazy(() => import('src/pages/employees'));
+export const NewEmployeePage = lazy(() => import('src/pages/new-employee'));
+export const EmployeeDetailPage = lazy(() => import('src/pages/employee-detail'));
 
 const renderFallback = () => (
   <Box
@@ -127,9 +132,14 @@ export const routesSection: RouteObject[] = [
       { path: 'inventory/new', element: <NewInventoryPage /> },
       { path: 'suppliers', element: <SuppliersPage /> },
       { path: 'suppliers/new', element: <NewSupplierPage /> },
+      { path: 'suppliers/:id', element: <SupplierDetailPage /> },
       { path: 'customers', element: <CustomersPage /> },
       { path: 'customers/new', element: <NewCustomerPage /> },
+      { path: 'customers/:id', element: <CustomerDetailPage /> },
       { path: 'employees', element: <EmployeesPage /> },
+      { path: 'employees/new', element: <NewEmployeePage /> },
+      { path: 'employees/:id', element: <EmployeeDetailPage /> },
+      { path: 'notifications', element: <NotificationsPage /> },
     ],
   },
   {
