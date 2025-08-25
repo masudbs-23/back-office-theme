@@ -100,7 +100,20 @@ export function SuppliersTableToolbar({
         <Button
           color="error"
           variant="outlined"
-          startIcon={<LucideIcon icon="solar:trash-bin-trash-bold" />}
+          startIcon={<LucideIcon icon="eva:trash-2-fill" />}
+          sx={{
+            borderRadius: 2,
+            px: 3,
+            py: 1.5,
+            fontWeight: 600,
+            borderWidth: 2,
+            whiteSpace: 'nowrap',
+            '&:hover': {
+              borderWidth: 2,
+              backgroundColor: 'error.main',
+              color: 'white',
+            },
+          }}
         >
           Delete ({numSelected})
         </Button>
