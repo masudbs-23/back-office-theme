@@ -205,8 +205,8 @@ export default function OrderDetailPage() {
         <Typography variant="h5" sx={{ mb: 3, fontWeight: 600, color: 'text.primary' }}>
           Customer Information
         </Typography>
-        <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid item xs={12} md={6}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 4 }}>
+          <Box sx={{ flex: 1 }}>
             <TextField
               fullWidth
               label="Customer Name"
@@ -268,8 +268,8 @@ export default function OrderDetailPage() {
                 },
               }}
             />
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
 
         <Divider sx={{ mb: 4 }} />
 
@@ -331,8 +331,8 @@ export default function OrderDetailPage() {
         <Typography variant="h5" sx={{ mb: 3, fontWeight: 600, color: 'text.primary' }}>
           Order Summary
         </Typography>
-        <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid item xs={12} md={6}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 4 }}>
+          <Box sx={{ flex: 1 }}>
             <Card
               sx={{
                 p: 3,
@@ -376,8 +376,8 @@ export default function OrderDetailPage() {
                 </Box>
               </Stack>
             </Card>
-          </Grid>
-          <Grid item xs={12} md={6}>
+          </Box>
+          <Box sx={{ flex: 1 }}>
             <Card
               sx={{
                 p: 3,
@@ -428,8 +428,8 @@ export default function OrderDetailPage() {
                 </Box>
               </Stack>
             </Card>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
 
         <Divider sx={{ mb: 4 }} />
 

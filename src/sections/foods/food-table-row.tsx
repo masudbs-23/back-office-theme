@@ -95,9 +95,7 @@ export function FoodTableRow({
             variant="soft"
             color={available ? 'success' : 'error'}
             sx={{
-              [`& .${labelClasses.label}`]: {
-                textTransform: 'capitalize',
-              },
+              textTransform: 'capitalize',
             }}
           >
             {available ? 'Available' : 'Unavailable'}

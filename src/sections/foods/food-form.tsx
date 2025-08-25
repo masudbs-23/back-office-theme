@@ -160,8 +160,8 @@ export function FoodForm({
 
       const submitData = {
         ...validatedData,
-        price: parseFloat(validatedData.price),
-        preparationTime: parseInt(validatedData.preparationTime) || 0,
+        price: validatedData.price,
+        preparationTime: validatedData.preparationTime || '0',
       };
 
       onSubmit(submitData, selectedImage || undefined);
@@ -307,68 +307,72 @@ export function FoodForm({
         </Box>
 
         {/* Form Fields */}
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="Food Name"
-              value={formData.name}
-              onChange={handleInputChange('name')}
-              required
-              error={!!errors.name}
-              helperText={errors.name}
-            />
-          </Grid>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
+            <Box sx={{ flex: 1 }}>
+              <TextField
+                fullWidth
+                label="Food Name"
+                value={formData.name}
+                onChange={handleInputChange('name')}
+                required
+                error={!!errors.name}
+                helperText={errors.name}
+              />
+            </Box>
 
-          <Grid item xs={12} md={6}>
-            <FormControl fullWidth required error={!!errors.category}>
-              <InputLabel>Category</InputLabel>
-              <Select
-                value={formData.category}
-                label="Category"
-                onChange={handleSelectChange('category')}
-              >
-                {CATEGORIES.map((category) => (
-                  <MenuItem key={category} value={category}>
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                  </MenuItem>
-                ))}
-              </Select>
-              {errors.category && (
-                <FormHelperText>{errors.category}</FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
+            <Box sx={{ flex: 1 }}>
+              <FormControl fullWidth required error={!!errors.category}>
+                <InputLabel>Category</InputLabel>
+                <Select
+                  value={formData.category}
+                  label="Category"
+                  onChange={handleSelectChange('category')}
+                >
+                  {CATEGORIES.map((category) => (
+                    <MenuItem key={category} value={category}>
+                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {errors.category && (
+                  <FormHelperText>{errors.category}</FormHelperText>
+                )}
+              </FormControl>
+            </Box>
+          </Box>
 
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="Price"
-              type="number"
-              value={formData.price}
-              onChange={handleInputChange('price')}
-              required
-              error={!!errors.price}
-              helperText={errors.price}
-              InputProps={{
-                startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
-              }}
-            />
-          </Grid>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
+            <Box sx={{ flex: 1 }}>
+              <TextField
+                fullWidth
+                label="Price"
+                type="number"
+                value={formData.price}
+                onChange={handleInputChange('price')}
+                required
+                error={!!errors.price}
+                helperText={errors.price}
+                InputProps={{
+                  startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
+                }}
+              />
+            </Box>
 
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="Preparation Time (minutes)"
-              type="number"
-              value={formData.preparationTime}
-              onChange={handleInputChange('preparationTime')}
-              error={!!errors.preparationTime}
-              helperText={errors.preparationTime}
-            />
-          </Grid>
+            <Box sx={{ flex: 1 }}>
+              <TextField
+                fullWidth
+                label="Preparation Time (minutes)"
+                type="number"
+                value={formData.preparationTime}
+                onChange={handleInputChange('preparationTime')}
+                error={!!errors.preparationTime}
+                helperText={errors.preparationTime}
+              />
+            </Box>
+          </Box>
 
-          <Grid item xs={12}>
+          <Box>
             <TextField
               fullWidth
               multiline
@@ -380,9 +384,9 @@ export function FoodForm({
               error={!!errors.description}
               helperText={errors.description}
             />
-          </Grid>
+          </Box>
 
-          <Grid item xs={12}>
+          <Box>
             <FormControlLabel
               control={
                 <Switch
@@ -392,8 +396,8 @@ export function FoodForm({
               }
               label="Available for ordering"
             />
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
 
         {/* Submit Button */}
         <Box sx={{ mt: 4, display: 'flex', justifyContent: 'flex-end' }}>

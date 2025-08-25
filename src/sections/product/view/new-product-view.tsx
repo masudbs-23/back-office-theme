@@ -169,8 +169,8 @@ export function NewProductView() {
 
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
             {/* Basic Information */}
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={8}>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
+              <Box sx={{ flex: { md: 8 } }}>
                 <TextField
                   fullWidth
                   name="name"
@@ -181,8 +181,8 @@ export function NewProductView() {
                     inputLabel: { shrink: true },
                   }}
                 />
-              </Grid>
-              <Grid item xs={12} md={4}>
+              </Box>
+              <Box sx={{ flex: { md: 4 } }}>
                 <TextField
                   fullWidth
                   name="sku"
@@ -193,8 +193,8 @@ export function NewProductView() {
                     inputLabel: { shrink: true },
                   }}
                 />
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
 
             <TextField
               fullWidth
@@ -210,8 +210,8 @@ export function NewProductView() {
             />
 
             {/* Pricing */}
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={3}>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
+              <Box sx={{ flex: { md: 3 } }}>
                 <TextField
                   fullWidth
                   name="price"
@@ -223,8 +223,8 @@ export function NewProductView() {
                     inputLabel: { shrink: true },
                   }}
                 />
-              </Grid>
-              <Grid item xs={12} md={3}>
+              </Box>
+              <Box sx={{ flex: { md: 3 } }}>
                 <TextField
                   fullWidth
                   name="salePrice"
@@ -237,8 +237,8 @@ export function NewProductView() {
                     inputLabel: { shrink: true },
                   }}
                 />
-              </Grid>
-              <Grid item xs={12} md={6}>
+              </Box>
+              <Box sx={{ flex: { md: 6 } }}>
                 <FormControl fullWidth sx={{ minWidth: 200 }}>
                   <InputLabel id="category-label">Category</InputLabel>
                   <Select
@@ -254,12 +254,12 @@ export function NewProductView() {
                     ))}
                   </Select>
                 </FormControl>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
 
             {/* Inventory */}
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={4}>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
+              <Box sx={{ flex: { md: 4 } }}>
                 <TextField
                   fullWidth
                   name="stock"
@@ -271,8 +271,8 @@ export function NewProductView() {
                     inputLabel: { shrink: true },
                   }}
                 />
-              </Grid>
-              <Grid item xs={12} md={4}>
+              </Box>
+              <Box sx={{ flex: { md: 4 } }}>
                 <TextField
                   fullWidth
                   name="weight"
@@ -284,8 +284,8 @@ export function NewProductView() {
                     inputLabel: { shrink: true },
                   }}
                 />
-              </Grid>
-              <Grid item xs={12} md={4}>
+              </Box>
+              <Box sx={{ flex: { md: 4 } }}>
                 <TextField
                   fullWidth
                   name="dimensions"
@@ -296,12 +296,12 @@ export function NewProductView() {
                     inputLabel: { shrink: true },
                   }}
                 />
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
 
             {/* Options */}
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2 }}>
+              <Box sx={{ flex: { md: 6 } }}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -311,8 +311,8 @@ export function NewProductView() {
                   }
                   label="On Sale"
                 />
-              </Grid>
-              <Grid item xs={12} md={6}>
+              </Box>
+              <Box sx={{ flex: { md: 6 } }}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -322,8 +322,8 @@ export function NewProductView() {
                   }
                   label="Available for Purchase"
                 />
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
 
             {/* Sizes */}
             <Box>
@@ -390,9 +390,9 @@ export function NewProductView() {
                 }}
               >
                 {previewUrls.length > 0 ? (
-                  <Grid container spacing={1} sx={{ p: 2 }}>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, p: 2 }}>
                     {previewUrls.map((url, index) => (
-                      <Grid item xs={6} sm={4} md={3} key={index}>
+                      <Box key={index} sx={{ width: { xs: 'calc(50% - 4px)', sm: 'calc(33.333% - 4px)', md: 'calc(25% - 4px)' } }}>
                         <Box sx={{ position: 'relative' }}>
                           <Box
                             component="img"
@@ -425,9 +425,9 @@ export function NewProductView() {
                             <LucideIcon icon="eva:close-fill" width={16} />
                           </Button>
                         </Box>
-                      </Grid>
+                      </Box>
                     ))}
-                  </Grid>
+                  </Box>
                 ) : (
                   <Box sx={{ textAlign: 'center' }}>
                     <LucideIcon icon="eva:cloud-upload-fill" sx={{ fontSize: 48, color: 'grey.400', mb: 1 }} />

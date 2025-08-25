@@ -20,7 +20,7 @@ export function VerifyOtpView() {
   const { verifyOtp, isLoading, error, clearError, isAuthenticated } = useAuth();
   const [otp, setOtp] = useState(['', '', '', '']);
   const [email, setEmail] = useState('');
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const inputRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -42,7 +42,7 @@ export function VerifyOtpView() {
     }
   }, [otp]);
 
-  const handleKeyDown = useCallback((index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = useCallback((index: number, e: React.KeyboardEvent<HTMLDivElement>) => {
     // Move to previous input on backspace if current input is empty
     if (e.key === 'Backspace' && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
@@ -84,7 +84,9 @@ export function VerifyOtpView() {
       {otp.map((digit, index) => (
         <TextField
           key={index}
-          ref={(el) => (inputRefs.current[index] = el)}
+          ref={(el) => {
+            inputRefs.current[index] = el;
+          }}
           value={digit}
           onChange={(e) => handleOtpChange(index, e.target.value)}
           onKeyDown={(e) => handleKeyDown(index, e)}

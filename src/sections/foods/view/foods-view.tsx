@@ -269,7 +269,7 @@ export function FoodsView() {
                   emptyRows={emptyRows(table.page, table.rowsPerPage, tableData.length)}
                 />
 
-                {notFound && <TableNoData searchQuery={filterName} onClearFilters={handleClearFilters} />}
+                {notFound && <TableNoData notFound={notFound} />}
               </TableBody>
             </Table>
           </TableContainer>
@@ -280,9 +280,9 @@ export function FoodsView() {
           page={table.page}
           count={tableData.length}
           rowsPerPage={table.rowsPerPage}
-          onPageChange={table.onChangePage}
+          onPageChange={table.onPage}
           rowsPerPageOptions={[5, 10, 25]}
-          onRowsPerPageChange={table.onChangeRowsPerPage}
+          onRowsPerPageChange={table.onRowsPerPage}
         />
       </Card>
     </DashboardContent>
