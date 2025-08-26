@@ -34,6 +34,11 @@ export const navData = [
     icon: glassIcon('ic-glass-bag'),
   },
   {
+    title: 'Purchase Orders',
+    path: '/dashboard/purchase-orders',
+    icon: glassIcon('ic-glass-buy'),
+  },
+  {
     title: 'Suppliers',
     path: '/dashboard/suppliers',
     icon: glassIcon('ic-glass-bag'),
@@ -49,8 +54,28 @@ export const navData = [
     icon: glassIcon('ic-glass-users'),
   },
   {
+    title: 'Attendance',
+    path: '/dashboard/attendance',
+    icon: glassIcon('ic-glass-users'),
+  },
+  {
+    title: 'Leave Management',
+    path: '/dashboard/leave-management',
+    icon: glassIcon('ic-glass-users'),
+  },
+  {
+    title: 'Performance Reviews',
+    path: '/dashboard/performance-reviews',
+    icon: glassIcon('ic-glass-users'),
+  },
+  {
     title: 'Orders',
     path: '/dashboard/orders',
+    icon: glassIcon('ic-glass-buy'),
+  },
+  {
+    title: 'Sales Reports',
+    path: '/dashboard/sales-reports',
     icon: glassIcon('ic-glass-buy'),
   },
   // {

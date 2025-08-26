@@ -51,6 +51,13 @@ export const NewEmployeePage = lazy(() => import('src/pages/new-employee'));
 export const EmployeeDetailPage = lazy(() => import('src/pages/employee-detail'));
 export const CategoriesPage = lazy(() => import('src/pages/categories'));
 export const NewCategoryPage = lazy(() => import('src/pages/new-category'));
+export const PurchaseOrdersPage = lazy(() => import('src/pages/purchase-orders'));
+export const AttendancePage = lazy(() => import('src/pages/attendance'));
+export const NewAttendancePage = lazy(() => import('src/pages/new-attendance'));
+export const LeaveManagementPage = lazy(() => import('src/pages/leave-management'));
+export const NewLeaveRequestPage = lazy(() => import('src/pages/new-leave-request'));
+export const SalesReportsPage = lazy(() => import('src/pages/sales-reports'));
+export const PerformanceReviewsPage = lazy(() => import('src/pages/performance-reviews'));
 
 const renderFallback = () => (
   <Box
@@ -143,6 +150,13 @@ export const routesSection: RouteObject[] = [
       { path: 'employees/:id', element: <EmployeeDetailPage /> },
       { path: 'categories', element: <CategoriesPage /> },
       { path: 'categories/new', element: <NewCategoryPage /> },
+      { path: 'purchase-orders', element: <PurchaseOrdersPage /> },
+      { path: 'attendance', element: <AttendancePage /> },
+      { path: 'attendance/new', element: <NewAttendancePage /> },
+      { path: 'leave-management', element: <LeaveManagementPage /> },
+      { path: 'leave-management/new', element: <NewLeaveRequestPage /> },
+      { path: 'performance-reviews', element: <PerformanceReviewsPage /> },
+      { path: 'sales-reports', element: <SalesReportsPage /> },
       { path: 'notifications', element: <NotificationsPage /> },
     ],
   },

@@ -497,15 +497,11 @@ export const _reports = [
     lastGenerated: _times(3),
     status: 'Generated',
   },
-  {
-    id: _id(4),
-    name: 'Customer Report',
-    type: 'customer',
-    period: 'Monthly',
-    lastGenerated: _times(4),
-    status: 'Generated',
-  },
 ];
+
+// ----------------------------------------------------------------------
+
+// ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
 
@@ -545,5 +541,296 @@ export const _categories = [...Array(12)].map((_, index) => {
     imageUrl: `/assets/images/product/product-${setIndex}.webp`,
     status: index % 3 ? 'active' : 'inactive',
     createdAt: _times(index),
+  };
+});
+
+// Purchase Orders Mock Data
+export const _purchaseOrders = [...Array(20)].map((_, index) => {
+  const setIndex = index + 1;
+  const statuses = ['Draft', 'Sent', 'Confirmed', 'Shipped', 'Received', 'Cancelled'];
+  const status = statuses[index % 6];
+  
+  return {
+    id: _id(index),
+    poNumber: `PO-${String(setIndex).padStart(4, '0')}`,
+    supplierId: _suppliers[index % _suppliers.length].id,
+    supplierName: _suppliers[index % _suppliers.length].name,
+    supplierEmail: _suppliers[index % _suppliers.length].email,
+    orderDate: _times(index),
+    expectedDelivery: new Date(Date.now() + (index % 30 + 7) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    status,
+    priority: ['Low', 'Medium', 'High', 'Urgent'][index % 4],
+    items: [
+      {
+        id: _id(index * 2),
+        productId: _products[index % _products.length].id,
+        productName: _products[index % _products.length].name,
+        quantity: Math.floor(Math.random() * 100) + 10,
+        unitPrice: _price(index),
+        total: _price(index) * (Math.floor(Math.random() * 100) + 10),
+        receivedQuantity: status === 'Received' ? Math.floor(Math.random() * 100) + 10 : 0,
+      },
+      ...(index % 3 === 0 ? [{
+        id: _id(index * 2 + 1),
+        productId: _products[(index + 1) % _products.length].id,
+        productName: _products[(index + 1) % _products.length].name,
+        quantity: Math.floor(Math.random() * 50) + 5,
+        unitPrice: _price((index + 1) % 24),
+        total: _price((index + 1) % 24) * (Math.floor(Math.random() * 50) + 5),
+        receivedQuantity: status === 'Received' ? Math.floor(Math.random() * 50) + 5 : 0,
+      }] : []),
+    ],
+    subtotal: _price(index) * (Math.floor(Math.random() * 1000) + 100),
+    tax: _price(index) * 0.08,
+    shipping: 25.00,
+    total: _price(index) * (Math.floor(Math.random() * 1000) + 100) * 1.08 + 25.00,
+    notes: index % 4 === 0 ? 'Please deliver before 5 PM' : '',
+    approvedBy: index % 2 === 0 ? _employees[index % _employees.length].name : null,
+    approvedDate: index % 2 === 0 ? _times(index) : null,
+    deliveryAddress: `${Math.floor(Math.random() * 9999) + 1} ${['Main St', 'Oak Ave', 'Pine Rd', 'Elm Blvd', 'Cedar Ln'][index % 5]}, ${['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'][index % 5]}, ${['NY', 'CA', 'IL', 'TX', 'AZ'][index % 5]} ${String(Math.floor(Math.random() * 90000) + 10000)}`,
+  };
+});
+
+// Supplier Quotes Mock Data
+export const _supplierQuotes = [...Array(15)].map((_, index) => {
+  const setIndex = index + 1;
+  const statuses = ['Pending', 'Submitted', 'Approved', 'Rejected', 'Expired'];
+  const status = statuses[index % 5];
+  
+  return {
+    id: _id(index),
+    quoteNumber: `QT-${String(setIndex).padStart(4, '0')}`,
+    supplierId: _suppliers[index % _suppliers.length].id,
+    supplierName: _suppliers[index % _suppliers.length].name,
+    requestDate: _times(index),
+    submissionDate: status !== 'Pending' ? _times(index + 1) : null,
+    validUntil: new Date(Date.now() + (index % 30 + 15) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    status,
+    priority: ['Low', 'Medium', 'High'][index % 3],
+    items: [
+      {
+        id: _id(index * 2),
+        productName: _products[index % _products.length].name,
+        description: _description(index % 24),
+        quantity: Math.floor(Math.random() * 100) + 10,
+        unitPrice: _price(index),
+        total: _price(index) * (Math.floor(Math.random() * 100) + 10),
+        specifications: 'High quality, durable material',
+        deliveryTime: `${Math.floor(Math.random() * 14) + 3} days`,
+      },
+    ],
+    subtotal: _price(index) * (Math.floor(Math.random() * 1000) + 100),
+    tax: _price(index) * 0.08,
+    shipping: 15.00,
+    total: _price(index) * (Math.floor(Math.random() * 1000) + 100) * 1.08 + 15.00,
+    terms: ['Net 30', 'Net 60', 'Cash on Delivery'][index % 3],
+    notes: index % 3 === 0 ? 'Bulk discount available for orders over $1000' : '',
+    contactPerson: _fullName(index % 24),
+    contactEmail: `${_fullName(index % 24).toLowerCase().replace(/\s+/g, '.')}@supplier.com`,
+    contactPhone: `+1 (555) ${String(Math.floor(Math.random() * 900) + 100)}-${String(Math.floor(Math.random() * 9000) + 1000)}`,
+  };
+});
+
+// HR Management Mock Data
+export const _attendance = [...Array(100)].map((_, index) => {
+  const employee = _employees[index % _employees.length];
+  const date = new Date(Date.now() - (index % 30) * 24 * 60 * 60 * 1000);
+  
+  return {
+    id: _id(index),
+    employeeId: employee.employeeId,
+    employeeName: employee.name,
+    date: date.toISOString().split('T')[0],
+    checkIn: `08:${String(Math.floor(Math.random() * 30)).padStart(2, '0')}:00`,
+    checkOut: `17:${String(Math.floor(Math.random() * 30) + 30).padStart(2, '0')}:00`,
+    totalHours: Math.floor(Math.random() * 2) + 8,
+    status: ['Present', 'Late', 'Absent', 'Half Day'][index % 4],
+    overtime: Math.floor(Math.random() * 3),
+    notes: index % 10 === 0 ? 'Work from home' : '',
+  };
+});
+
+export const _leaveRequests = [...Array(25)].map((_, index) => {
+  const employee = _employees[index % _employees.length];
+  const leaveTypes = ['Annual Leave', 'Sick Leave', 'Personal Leave', 'Maternity Leave', 'Paternity Leave'];
+  const statuses = ['Pending', 'Approved', 'Rejected', 'Cancelled'];
+  
+  return {
+    id: _id(index),
+    employeeId: employee.employeeId,
+    employeeName: employee.name,
+    leaveType: leaveTypes[index % leaveTypes.length],
+    startDate: new Date(Date.now() + (index % 30 + 1) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    endDate: new Date(Date.now() + (index % 30 + 3) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    totalDays: Math.floor(Math.random() * 5) + 1,
+    status: statuses[index % statuses.length],
+    reason: ['Family vacation', 'Medical appointment', 'Personal emergency', 'Wedding', 'Conference'][index % 5],
+    submittedDate: _times(index),
+    approvedBy: index % 2 === 0 ? _employees[(index + 1) % _employees.length].name : null,
+    approvedDate: index % 2 === 0 ? _times(index + 1) : null,
+    notes: index % 4 === 0 ? 'Approved with conditions' : '',
+  };
+});
+
+export const _performanceReviews = [...Array(20)].map((_, index) => {
+  const employee = _employees[index % _employees.length];
+  const reviewers = ['Excellent', 'Good', 'Satisfactory', 'Needs Improvement', 'Poor'];
+  
+  return {
+    id: _id(index),
+    employeeId: employee.employeeId,
+    employeeName: employee.name,
+    reviewPeriod: ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024'][index % 4],
+    reviewDate: _times(index),
+    reviewer: _employees[(index + 1) % _employees.length].name,
+    overallRating: Math.floor(Math.random() * 5) + 1,
+    performance: reviewers[index % reviewers.length],
+    strengths: ['Team player', 'Good communication', 'Technical skills', 'Leadership', 'Problem solving'][index % 5],
+    areasForImprovement: ['Time management', 'Communication', 'Technical skills', 'Leadership', 'Documentation'][index % 5],
+    goals: ['Improve productivity', 'Enhance skills', 'Take on more responsibilities', 'Mentor junior staff', 'Complete certification'][index % 5],
+    comments: 'Overall good performance with room for improvement in specific areas.',
+    nextReviewDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+  };
+});
+
+export const _payroll = [...Array(30)].map((_, index) => {
+  const employee = _employees[index % _employees.length];
+  const month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][index % 12];
+  
+  return {
+    id: _id(index),
+    employeeId: employee.employeeId,
+    employeeName: employee.name,
+    month,
+    year: 2024,
+    basicSalary: employee.salary,
+    allowances: Math.floor(Math.random() * 1000) + 500,
+    overtime: Math.floor(Math.random() * 500) + 100,
+    bonuses: index % 3 === 0 ? Math.floor(Math.random() * 2000) + 500 : 0,
+    grossPay: employee.salary + Math.floor(Math.random() * 1000) + 500 + Math.floor(Math.random() * 500) + 100,
+    deductions: Math.floor(Math.random() * 800) + 200,
+    netPay: employee.salary + Math.floor(Math.random() * 1000) + 500 + Math.floor(Math.random() * 500) + 100 - (Math.floor(Math.random() * 800) + 200),
+    paymentDate: _times(index),
+    status: ['Paid', 'Pending', 'Processing'][index % 3],
+    paymentMethod: ['Bank Transfer', 'Check', 'Cash'][index % 3],
+    notes: index % 5 === 0 ? 'Bonus included for outstanding performance' : '',
+  };
+});
+
+// Sales Reports Mock Data
+export const _salesReports = [...Array(12)].map((_, index) => {
+  const month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][index];
+  
+  return {
+    id: _id(index),
+    month,
+    year: 2024,
+    totalOrders: Math.floor(Math.random() * 500) + 100,
+    totalRevenue: Math.floor(Math.random() * 100000) + 50000,
+    totalCost: Math.floor(Math.random() * 60000) + 30000,
+    grossProfit: Math.floor(Math.random() * 40000) + 20000,
+    netProfit: Math.floor(Math.random() * 30000) + 15000,
+    averageOrderValue: Math.floor(Math.random() * 200) + 100,
+    topSellingProduct: _products[index % _products.length].name,
+    topCustomer: _customers[index % _customers.length].name,
+    growthRate: (Math.random() * 20 - 10).toFixed(2), // -10% to +10%
+    generatedDate: _times(index),
+  };
+});
+
+// Customer Purchase History Mock Data
+export const _customerPurchaseHistory = [...Array(50)].map((_, index) => {
+  const customer = _customers[index % _customers.length];
+  const product = _products[index % _products.length];
+  
+  return {
+    id: _id(index),
+    customerId: customer.id,
+    customerName: customer.name,
+    customerEmail: customer.email,
+    orderId: _orders[index % _orders.length].id,
+    orderNumber: _orders[index % _orders.length].orderNumber,
+    productId: product.id,
+    productName: product.name,
+    productCategory: ['Electronics', 'Clothing', 'Home & Garden', 'Sports', 'Books', 'Automotive'][index % 6],
+    quantity: Math.floor(Math.random() * 5) + 1,
+    unitPrice: product.price,
+    totalAmount: product.price * (Math.floor(Math.random() * 5) + 1),
+    purchaseDate: _times(index),
+    paymentMethod: ['Credit Card', 'PayPal', 'Cash on Delivery'][index % 3],
+    orderStatus: ['Completed', 'Shipped', 'Delivered', 'Returned'][index % 4],
+    reviewRating: Math.floor(Math.random() * 5) + 1,
+    reviewComment: index % 3 === 0 ? 'Great product, fast delivery!' : '',
+  };
+});
+
+// Inventory Turnover Reports Mock Data
+export const _inventoryTurnoverReports = [...Array(20)].map((_, index) => {
+  const product = _products[index % _products.length];
+  const category = ['Electronics', 'Clothing', 'Home & Garden', 'Sports', 'Books', 'Automotive'][index % 6];
+  
+  return {
+    id: _id(index),
+    productId: product.id,
+    productName: product.name,
+    category,
+    sku: `SKU-${String(index + 1).padStart(4, '0')}`,
+    beginningInventory: Math.floor(Math.random() * 1000) + 100,
+    endingInventory: Math.floor(Math.random() * 500) + 50,
+    averageInventory: Math.floor(Math.random() * 750) + 75,
+    costOfGoodsSold: Math.floor(Math.random() * 50000) + 10000,
+    turnoverRatio: (Math.random() * 10 + 2).toFixed(2), // 2-12 times
+    daysToSell: Math.floor(365 / (Math.random() * 10 + 2)),
+    lastUpdated: _times(index),
+    status: ['High Turnover', 'Medium Turnover', 'Low Turnover', 'Slow Moving'][index % 4],
+    recommendations: ['Increase stock', 'Reduce stock', 'Maintain current level', 'Discontinue'][index % 4],
+  };
+});
+
+// Delivery Scheduling Mock Data
+export const _deliverySchedules = [...Array(15)].map((_, index) => {
+  const order = _orders[index % _orders.length];
+  const statuses = ['Scheduled', 'In Transit', 'Out for Delivery', 'Delivered', 'Failed', 'Rescheduled'];
+  
+  return {
+    id: _id(index),
+    orderId: order.id,
+    orderNumber: order.orderNumber,
+    customerName: order.customerName,
+    customerAddress: order.customerAddress,
+    customerPhone: order.customerPhone,
+    scheduledDate: new Date(Date.now() + (index % 7 + 1) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    scheduledTime: `${Math.floor(Math.random() * 12) + 8}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`,
+    actualDeliveryDate: index % 3 === 0 ? new Date(Date.now() + (index % 7 + 1) * 24 * 60 * 60 * 1000).toISOString().split('T')[0] : null,
+    actualDeliveryTime: index % 3 === 0 ? `${Math.floor(Math.random() * 12) + 8}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}` : null,
+    status: statuses[index % statuses.length],
+    driverName: _fullName(index % 24),
+    driverPhone: `+1 (555) ${String(Math.floor(Math.random() * 900) + 100)}-${String(Math.floor(Math.random() * 9000) + 1000)}`,
+    vehicleNumber: `VAN-${String(Math.floor(Math.random() * 999)).padStart(3, '0')}`,
+    trackingNumber: `TRK${String(Math.floor(Math.random() * 900000) + 100000)}`,
+    notes: index % 4 === 0 ? 'Customer requested delivery before 6 PM' : '',
+    deliveryAttempts: Math.floor(Math.random() * 3) + 1,
+  };
+});
+
+// Cost Tracking Mock Data
+export const _costTracking = [...Array(30)].map((_, index) => {
+  const categories = ['Raw Materials', 'Labor', 'Overhead', 'Marketing', 'Administrative', 'Shipping', 'Utilities', 'Rent'];
+  const types = ['Fixed', 'Variable', 'Semi-variable'];
+  
+  return {
+    id: _id(index),
+    date: _times(index),
+    category: categories[index % categories.length],
+    description: _description(index % 24),
+    amount: Math.floor(Math.random() * 10000) + 100,
+    type: types[index % types.length],
+    department: ['Production', 'Sales', 'Marketing', 'IT', 'HR', 'Finance', 'Operations'][index % 7],
+    supplier: index % 3 === 0 ? _suppliers[index % _suppliers.length].name : null,
+    invoiceNumber: index % 3 === 0 ? `INV-${String(Math.floor(Math.random() * 9999)).padStart(4, '0')}` : null,
+    paymentStatus: ['Paid', 'Pending', 'Overdue'][index % 3],
+    paymentDate: index % 3 === 0 ? _times(index) : null,
+    approvedBy: _employees[index % _employees.length].name,
+    notes: index % 5 === 0 ? 'Monthly recurring expense' : '',
   };
 });
