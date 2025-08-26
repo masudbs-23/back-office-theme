@@ -49,6 +49,8 @@ export const CustomerDetailPage = lazy(() => import('src/pages/customer-detail')
 export const EmployeesPage = lazy(() => import('src/pages/employees'));
 export const NewEmployeePage = lazy(() => import('src/pages/new-employee'));
 export const EmployeeDetailPage = lazy(() => import('src/pages/employee-detail'));
+export const CategoriesPage = lazy(() => import('src/pages/categories'));
+export const NewCategoryPage = lazy(() => import('src/pages/new-category'));
 
 const renderFallback = () => (
   <Box
@@ -139,6 +141,8 @@ export const routesSection: RouteObject[] = [
       { path: 'employees', element: <EmployeesPage /> },
       { path: 'employees/new', element: <NewEmployeePage /> },
       { path: 'employees/:id', element: <EmployeeDetailPage /> },
+      { path: 'categories', element: <CategoriesPage /> },
+      { path: 'categories/new', element: <NewCategoryPage /> },
       { path: 'notifications', element: <NotificationsPage /> },
     ],
   },

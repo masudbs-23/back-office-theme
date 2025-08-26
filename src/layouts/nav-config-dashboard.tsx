@@ -29,6 +29,11 @@ export const navData = [
     icon: glassIcon('ic-glass-buy'),
   },
   {
+    title: 'Categories',
+    path: '/dashboard/categories',
+    icon: glassIcon('ic-glass-bag'),
+  },
+  {
     title: 'Suppliers',
     path: '/dashboard/suppliers',
     icon: glassIcon('ic-glass-bag'),

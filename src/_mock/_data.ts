@@ -506,3 +506,44 @@ export const _reports = [
     status: 'Generated',
   },
 ];
+
+// ----------------------------------------------------------------------
+
+export const _categories = [...Array(12)].map((_, index) => {
+  const setIndex = index + 1;
+
+  return {
+    id: _id(index),
+    name: [
+      'Electronics',
+      'Clothing',
+      'Food & Beverages',
+      'Automotive',
+      'Home & Garden',
+      'Sports & Recreation',
+      'Books & Media',
+      'Health & Beauty',
+      'Toys & Games',
+      'Office Supplies',
+      'Jewelry',
+      'Pet Supplies',
+    ][index] || 'Category',
+    description: [
+      'Electronic devices and gadgets',
+      'Fashion and apparel items',
+      'Food and beverage products',
+      'Automotive parts and accessories',
+      'Home and garden supplies',
+      'Sports equipment and recreation items',
+      'Books, movies, and media content',
+      'Health and beauty products',
+      'Toys and games for all ages',
+      'Office and school supplies',
+      'Jewelry and accessories',
+      'Pet food and supplies',
+    ][index] || 'Category description',
+    imageUrl: `/assets/images/product/product-${setIndex}.webp`,
+    status: index % 3 ? 'active' : 'inactive',
+    createdAt: _times(index),
+  };
+});

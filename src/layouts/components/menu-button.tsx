@@ -9,7 +9,7 @@ import { LucideIcon } from 'src/components/lucide-icons';
 export function MenuButton({ sx, ...other }: IconButtonProps) {
   return (
     <IconButton sx={sx} {...other}>
-      <LucideIcon icon="custom:menu-duotone" width={24} />
+      <LucideIcon icon="custom:menu-duotone" width={28} />
     </IconButton>
   );
 }

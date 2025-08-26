@@ -118,8 +118,8 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
               '&:hover': { color: 'text.primary' },
               [`&.${menuItemClasses.selected}`]: {
                 color: 'text.primary',
-                bgcolor: 'action.selected',
-                fontWeight: 'fontWeightSemiBold',
+                // bgcolor: 'action.selected',
+                // fontWeight: 'fontWeightSemiBold',
               },
             },
           }}
@@ -133,29 +133,16 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
                 px: 1,
                 gap: 2,
                 borderRadius: 0.75,
-                ...(option.label === 'Profile' || option.label === 'Change Password' ? {
-                  color: 'success.main !important',
-                  '&:hover': { 
-                    color: 'success.dark !important',
-                    backgroundColor: 'action.hover',
-                  },
-                  [`&.${menuItemClasses.selected}`]: {
-                    color: 'success.dark !important',
-                    bgcolor: 'action.selected',
-                    fontWeight: 'fontWeightSemiBold',
-                  },
-                } : {
-                  color: 'text.secondary',
-                  '&:hover': { 
-                    color: 'text.primary',
-                    backgroundColor: 'action.hover',
-                  },
-                  [`&.${menuItemClasses.selected}`]: {
-                    color: 'text.primary',
-                    bgcolor: 'action.selected',
-                    fontWeight: 'fontWeightSemiBold',
-                  },
-                }),
+                color: 'success.main !important',
+                // '&:hover': { 
+                //   color: 'success.dark !important',
+                //   backgroundColor: 'action.hover',
+                // },
+                [`&.${menuItemClasses.selected}`]: {
+                  color: 'success.dark !important',
+                  bgcolor: 'action.selected',
+                  fontWeight: 'fontWeightSemiBold',
+                },
               }}
             >
               {option.icon}
@@ -167,10 +154,10 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Box sx={{ p: 1 }}>
-          <Button 
-            fullWidth 
-            color="error" 
-            size="medium" 
+          <Button
+            fullWidth
+            color="error"
+            size="medium"
             variant="text"
             onClick={handleLogout}
             startIcon={<LucideIcon icon="eva:log-out-fill" />}
