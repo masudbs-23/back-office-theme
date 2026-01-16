@@ -109,6 +109,18 @@ export function SignInView() {
       >
         {isLoading ? 'Signing in...' : 'Sign in'}
       </Button>
+
+      <Box sx={{ mt: 3, textAlign: 'center' }}>
+        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
+          Use dummy credentials:
+        </Typography>
+        <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
+          Email: demo@gmail.com
+        </Typography>
+        <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
+          Password: demo1234
+        </Typography>
+      </Box>
     </Box>
   );
 
@@ -136,7 +148,7 @@ export function SignInView() {
           </Link>
         </Typography>
       </Box>
-             {renderForm}
+      {renderForm}
     </>
   );
 }

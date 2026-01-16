@@ -138,36 +138,44 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       dispatch({ type: 'AUTH_START' });
       
-      const response = await fetch('https://tr-cafe.onrender.com/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      // DUMMY LOGIN IMPLEMENTATION
+      // const response = await fetch('https://tr-cafe.onrender.com/api/login', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ email, password }),
+      // });
 
-      const data: AuthResponse = await response.json();
+      // const data: AuthResponse = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
+      // if (!response.ok) {
+      //   throw new Error(data.message || 'Login failed');
+      // }
 
-      if (data.token) {
+      // MOCK DATA for dummy login
+      const mockToken = 'dummy-jwt-token-12345';
+      const mockUser: User = {
+        id: 'dummy-user-123',
+        email,
+        name: 'Dummy Admin',
+        role: 'admin',
+      };
+
+      // Simulate network delay if desired, or just proceed
+      await new Promise(resolve => setTimeout(resolve, 500)); 
+
+      if (mockToken) {
         // Create user object from available data
-        const user: User = {
-          id: data.user?.id || 'unknown',
-          email,
-          name: data.user?.name,
-          role: data.role,
-        };
+        const user = mockUser;
 
         // Store in localStorage
-        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('authToken', mockToken);
         localStorage.setItem('userData', JSON.stringify(user));
         
         dispatch({
           type: 'AUTH_SUCCESS',
-          payload: { user, token: data.token },
+          payload: { user, token: mockToken },
         });
       } else {
         throw new Error('No token received from server');
